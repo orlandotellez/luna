@@ -1,24 +1,46 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+type RootRoutes = "(tabs)"
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+interface StackConfig {
+  name: RootRoutes;
+  headerShown: boolean;
+  title?: string;
+  presentation?: 'modal' | 'card' | 'fullScreenModal';
+}
+
+const ROOT_STACK: StackConfig[] = [
+  {
+    name: "(tabs)",
+    headerShown: false
+  },
+];
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
+    <>
       <StatusBar style="auto" />
-    </ThemeProvider>
+      <Stack
+        screenOptions={{
+          headerStyle: { backgroundColor: '#000' },
+          headerTintColor: '#fff',
+          contentStyle: { backgroundColor: '#000' },
+        }}
+      >
+        {ROOT_STACK.map((route) => (
+          <Stack.Screen
+            key={route.name}
+            name={route.name}
+            options={{
+              headerShown: route.headerShown,
+              title: route.title,
+              presentation: route.presentation,
+            }}
+          />
+        ))}
+      </Stack>
+    </>
   );
 }
