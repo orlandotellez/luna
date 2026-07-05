@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Infrastructure/Infrastructure.csproj": {}
+    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Infrastructure/Luna.Infrastructure.csproj": {}
   },
   "projects": {
-    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Infrastructure/Infrastructure.csproj": {
+    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Infrastructure/Luna.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Infrastructure/Infrastructure.csproj",
-        "projectName": "Infrastructure",
-        "projectPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Infrastructure/Infrastructure.csproj",
+        "projectUniqueName": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Infrastructure/Luna.Infrastructure.csproj",
+        "projectName": "Luna.Infrastructure",
+        "projectPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Infrastructure/Luna.Infrastructure.csproj",
         "packagesPath": "/home/dev-espada/.nuget/packages/",
-        "outputPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Infrastructure/obj/",
+        "outputPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Infrastructure/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/dev-espada/.nuget/NuGet/NuGet.Config"

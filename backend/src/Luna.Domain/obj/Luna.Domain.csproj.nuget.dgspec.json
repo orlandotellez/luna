@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Application/Application.csproj": {}
+    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Domain/Luna.Domain.csproj": {}
   },
   "projects": {
-    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Application/Application.csproj": {
+    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Domain/Luna.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Application/Application.csproj",
-        "projectName": "Application",
-        "projectPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Application/Application.csproj",
+        "projectUniqueName": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Domain/Luna.Domain.csproj",
+        "projectName": "Luna.Domain",
+        "projectPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Domain/Luna.Domain.csproj",
         "packagesPath": "/home/dev-espada/.nuget/packages/",
-        "outputPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Application/obj/",
+        "outputPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/dev-espada/.nuget/NuGet/NuGet.Config"

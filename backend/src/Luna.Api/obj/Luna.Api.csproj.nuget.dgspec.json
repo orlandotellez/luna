@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Api/Api.csproj": {}
+    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Api/Luna.Api.csproj": {}
   },
   "projects": {
-    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Api/Api.csproj": {
+    "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Api/Luna.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Api/Api.csproj",
-        "projectName": "Api",
-        "projectPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Api/Api.csproj",
+        "projectUniqueName": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Api/Luna.Api.csproj",
+        "projectName": "Luna.Api",
+        "projectPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Api/Luna.Api.csproj",
         "packagesPath": "/home/dev-espada/.nuget/packages/",
-        "outputPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Api/obj/",
+        "outputPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/dev-espada/.nuget/NuGet/NuGet.Config"

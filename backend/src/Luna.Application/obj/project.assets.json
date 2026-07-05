@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Domain/Domain.csproj",
-      "projectName": "Domain",
-      "projectPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Domain/Domain.csproj",
+      "projectUniqueName": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Application/Luna.Application.csproj",
+      "projectName": "Luna.Application",
+      "projectPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Application/Luna.Application.csproj",
       "packagesPath": "/home/dev-espada/.nuget/packages/",
-      "outputPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Domain/obj/",
+      "outputPath": "/home/dev-espada/work/pub/LUNA-REPO/backend/src/Luna.Application/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/dev-espada/.nuget/NuGet/NuGet.Config"
