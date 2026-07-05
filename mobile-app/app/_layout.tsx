@@ -1,6 +1,8 @@
 import { THEME } from '@/src/shared/lib';
 import { Stack } from 'expo-router';
-import { StatusBar, View } from 'react-native';
+import * as NavigationBar from 'expo-navigation-bar';
+import { useEffect } from 'react';
+import { Platform, StatusBar, View } from 'react-native';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -20,6 +22,11 @@ const ROOT_STACK: StackConfig[] = [
   },
 ];
 
+// Barra de navegacion nativa con iconos oscuros
+useEffect(() => {
+  if (Platform.OS !== 'android') return
+  NavigationBar.setButtonStyleAsync('dark')
+})
 export default function RootLayout() {
   return (
     <>
