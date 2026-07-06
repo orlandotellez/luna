@@ -16,6 +16,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 // Extensiones configurables
 builder.Services.AddRateLimiterConfiguration();
+builder.Services.AddCorsConfiguration(builder.Configuration);
+builder.Services.AddDatabaseConfiguration(builder.Configuration);
 
 var app = builder.Build();
 
