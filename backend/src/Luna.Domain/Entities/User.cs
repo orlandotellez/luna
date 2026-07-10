@@ -9,11 +9,8 @@ public class User
     public string? Phone { get; set; }
     public string? Image { get; set; }
     public string? Role { get; set; }
-    public string? UserNamej { get; set; }
+    public string? UserName { get; set; }
     public string? Bio { get; set; }
-    public string? WebsiteUrl { get; set; }
-    public string? GithubUrl { get; set; }
-    public string? LinkedinUrl { get; set; }
     public bool IsActive { get; set; }
     public DateTime? LastSeenAt { get; set; }
     public DateTime CreatedAt { get; set; }
