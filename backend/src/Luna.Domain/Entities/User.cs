@@ -1,3 +1,5 @@
+using Luna.Domain.Enums;
+
 namespace Luna.Domain.Entities;
 
 public class User
@@ -8,7 +10,7 @@ public class User
     public bool EmailVerified { get; set; }
     public string? Phone { get; set; }
     public string? Image { get; set; }
-    public string? Role { get; set; }
+    public UserRole Role { get; set; }
     public string? UserName { get; set; }
     public string? Bio { get; set; }
     public bool IsActive { get; set; }

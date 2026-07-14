@@ -9,8 +9,8 @@ public interface IUserRepository
     Task<User?> GetByEmailAsync(string email);
     Task<User?> GetByIdAsync(Guid id);
     Task<User> CreateAsync(User user);
-    Task<User> UpdatedAsync(User user);
-    Task SoftDeleteAsyn(Guid id, Guid deletedByUserId, string deletedByName);
+    Task<User> UpdateAsync(User user);
+    Task SoftDeleteAsync(Guid id, Guid deletedByUserId, string deletedByName);
     Task RestoreAsync(Guid id);
 }
 
