@@ -3,6 +3,7 @@ using Luna.Application.Common.Models;
 using Luna.Application.Common.Mapping;
 using Luna.Domain.Exceptions;
 using Luna.Domain.Entities;
+using Luna.Domain.Enums;
 
 namespace Luna.Application.Features.Auth;
 
@@ -43,7 +44,7 @@ public class AuthService : IAuthService
         {
             Id = Guid.NewGuid(),
             Email = request.Name,
-            Role = "standar",
+            Role = UserRole.User,
             IsActive = true,
             EmailVerified = false,
             CreatedAt = DateTime.UtcNow,
