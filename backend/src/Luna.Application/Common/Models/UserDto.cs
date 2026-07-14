@@ -1,3 +1,5 @@
+using Luna.Domain.Enums;
+
 namespace Luna.Application.Common.Models;
 
 public record UserDto
@@ -8,7 +10,7 @@ public record UserDto
     public bool EmailVerified { get; set; }
     public string? Phone { get; set; }
     public string? Image { get; set; }
-    public string Role { get; set; } = string.Empty;
+    public UserRole Role { get; set; }
     public string? UserName { get; set; }
     public string? Bio { get; set; }
     public bool IsActive { get; set; }
