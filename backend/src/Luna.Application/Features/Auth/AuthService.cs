@@ -95,7 +95,6 @@ public class AuthService : IAuthService
         return response;
     }
 
-
     public async Task<AuthResponse> LoginAsync(LoginRequest request)
     {
         // Search credentials
@@ -139,4 +138,10 @@ public class AuthService : IAuthService
 
         return response;
     }
+
+    public async Task LogoutAsync(string refreshToken)
+    {
+        await _sessionRepository.DeleteAsync(refreshToken);
+    }
+
 }
