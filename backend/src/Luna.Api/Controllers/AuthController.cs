@@ -41,4 +41,25 @@ public class AuthController : ControllerBase
             user = result.User
         });
     }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)
+    {
+        var currentUserId = HttpContext.GetCurrentUserId();
+
+        var result = await _authService.LoginAsync(request);
+
+        if (currentUserId.HasValue && currentUserId != result.User?.Id)
+        {
+            _cookieHelper.ClearAuthCookies();
+        }
+
+        _cookieHelper.SetAuthCookies(result.AccessToken, result.RefreshToken);
+
+        return Ok(new
+        {
+            message = result.Message,
+            user = result.User
+        });
+    }
 }

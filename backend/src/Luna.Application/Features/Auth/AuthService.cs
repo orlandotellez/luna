@@ -84,12 +84,59 @@ public class AuthService : IAuthService
 
         await _sessionRepository.CreateAsync(session);
 
-        return new AuthResponse
+        var response = new AuthResponse
         {
             Message = "User created sucessfully. Please veriry your email",
             User = user.MapUserToDto(),
             AccessToken = accessToken,
             RefreshToken = refreshToken
         };
+
+        return response;
+    }
+
+
+    public async Task<AuthResponse> LoginAsync(LoginRequest request)
+    {
+        // Search credentials
+        var account = await _accountRepository.GetCredentialsByEmailAsync(request.Email);
+        if (account == null) throw AppExceptions.Unauthorized("Invalid crednetials");
+
+        // Verify Password 
+        if (account.Password == null || !_passwordService.VerifyPassword(request.Password, account.Password)) throw AppExceptions.Unauthorized("Invalid credentials");
+
+        // Get User 
+        var user = await _userRepository.GetByIdAsync(account.UserId);
+        if (user == null) throw AppExceptions.Unauthorized("User not found");
+
+
+        if (user.DeletedAt != null) throw AppExceptions.Unauthorized("Account has been deactivated");
+
+        // Generate tokens
+        var (accessToken, refreshToken) = _tokenService.GenerateTokens(user.Id, user.Email, user.Role);
+
+        // Create session 
+        var session = new Session
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            Token = refreshToken,
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        await _sessionRepository.CreateAsync(session);
+
+        var response = new AuthResponse
+        {
+            Message = "Login successful",
+            User = user.MapUserToDto(),
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+
+        };
+
+        return response;
     }
 }
