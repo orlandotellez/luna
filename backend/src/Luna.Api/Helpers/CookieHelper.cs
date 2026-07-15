@@ -42,7 +42,7 @@ public class CookieHelper
         };
 
         response.Cookies.Append("accessToken", accessToken, accessTokenOptions);
-        response.Cookies.Append("refreshToken", accessToken, refreshTokenOptions);
+        response.Cookies.Append("refreshToken", refreshToken, refreshTokenOptions);
     }
 
     public void ClearAuthCookies()

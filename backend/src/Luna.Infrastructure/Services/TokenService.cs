@@ -4,10 +4,11 @@ using System.Text;
 using Luna.Application.Common.Interfaces;
 using Luna.Domain.Enums;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
-namespace Luna.Api.Helpers;
+namespace Luna.Infrastructure.Services;
 
-public class TokenHelperService : ITokenService
+public class TokenService : ITokenService
 {
     private readonly string _secret;
     private readonly string _refreshSecret;
@@ -16,7 +17,7 @@ public class TokenHelperService : ITokenService
     private readonly TimeSpan _accessTokenExpiry;
     private readonly TimeSpan _refreshTokenExpiry;
 
-    public TokenHelperService(IConfiguration configuration)
+    public TokenService(IConfiguration configuration)
     {
         _secret = configuration["Jwt:Secret"]
             ?? throw new InvalidOperationException("JWT Secret is not configured");

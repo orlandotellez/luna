@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Luna.Application.Common.Interfaces;
 using Luna.Application.Common.Models;
 using Luna.Application.Common.Mapping;
@@ -137,6 +138,58 @@ public class AuthService : IAuthService
         };
 
         return response;
+    }
+
+    public async Task<RefreshResponse> RefreshAsync(string refreshToken)
+    {
+        // Validate refreshToken
+        var principal = _tokenService.ValidateRefreshToken(refreshToken);
+        if (principal == null)
+            throw AppExceptions.Unauthorized("Invalid or expired refresh token");
+
+        // Extract UserId from token
+        var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdClaim, out var userId))
+            throw AppExceptions.Unauthorized("Invalid refresh token");
+
+        // Search active session with refreshToken
+        var existingSession = await _sessionRepository.GetByTokenAsync(refreshToken);
+        if (existingSession == null)
+            throw AppExceptions.Unauthorized("Session not found");
+
+        // Veriry expiry session
+        if (existingSession.ExpiresAt < DateTime.UtcNow)
+            throw AppExceptions.Unauthorized("Session expired");
+
+        // Search user 
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user == null || user.DeletedAt != null)
+            throw AppExceptions.Unauthorized("User not found or deactivated");
+
+        // Generate new Tokens(rotation)
+        var (newAccessToken, newRefreshToken) = _tokenService.GenerateTokens(user.Id, user.Email, user.Role);
+
+        // delete old session
+        await _sessionRepository.DeleteAsync(refreshToken);
+
+        // Create new session
+        var newSession = new Session
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            Token = newRefreshToken,
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+        };
+        await _sessionRepository.CreateAsync(newSession);
+
+        return new RefreshResponse
+        {
+            Message = "Tokens refreshed successfully",
+            AccessToken = newAccessToken,
+            RefreshToken = newRefreshToken
+        };
     }
 
     public async Task LogoutAsync(string refreshToken)
