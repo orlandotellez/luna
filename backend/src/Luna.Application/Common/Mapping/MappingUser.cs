@@ -9,7 +9,6 @@ public static class MappingUser
     public static UserDto MapUserToDto(this User user)
     {
         if (user == null) throw AppExceptions.UnprocessableEntity(nameof(user));
-        if (user.Role == null) throw AppExceptions.NotFound("no role");
 
         return new UserDto
         {
