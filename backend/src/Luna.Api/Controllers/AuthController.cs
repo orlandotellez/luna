@@ -63,6 +63,19 @@ public class AuthController : ControllerBase
         });
     }
 
+    [HttpPost("refresh")]
+    public async Task<ActionResult<RefreshResponse>> Refresh([FromBody] RefreshRequest? request = null)
+    {
+        var refreshToken = Request.Cookies["refreshToken"] ?? string.Empty;
+        if (string.IsNullOrEmpty(refreshToken))
+            return BadRequest(new { error = "Refresh token is required" });
+
+        var result = await _authService.RefreshAsync(refreshToken);
+
+        _cookieHelper.SetAuthCookies(result.AccessToken, result.RefreshToken);
+
+        return Ok(result);
+    }
 
     [HttpPost("logout")]
     public async Task<ActionResult> Logout()
