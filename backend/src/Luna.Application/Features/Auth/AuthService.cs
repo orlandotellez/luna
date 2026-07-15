@@ -43,7 +43,8 @@ public class AuthService : IAuthService
         var user = new User
         {
             Id = Guid.NewGuid(),
-            Email = request.Name,
+            Name = request.Name,
+            Email = request.Email,
             Role = UserRole.User,
             IsActive = true,
             EmailVerified = false,
