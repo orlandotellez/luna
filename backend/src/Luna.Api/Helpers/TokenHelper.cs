@@ -1,125 +1,39 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using Luna.Application.Common.Interfaces;
 using Luna.Domain.Enums;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Luna.Api.Helpers;
 
-public class TokenHelper : ITokenService
+public class TokenHelper
 {
-    private readonly string _secret;
-    private readonly string _refreshSecret;
-    private readonly string _issuer;
-    private readonly string _audience;
-    private readonly TimeSpan _accessTokenExpiry;
-    private readonly TimeSpan _refreshTokenExpiry;
+    private readonly ITokenService _tokenService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public TokenHelper(IConfiguration configuration)
+    public TokenHelper(ITokenService tokenService, IHttpContextAccessor httpContextAccessor)
     {
-        _secret = configuration["Jwt:Secret"]
-            ?? throw new InvalidOperationException("JWT Secret is not configured");
-        _refreshSecret = configuration["Jwt:RefreshSecret"]
-            ?? throw new InvalidOperationException("JWT RefreshSecret is not configured");
-        _issuer = configuration["Jwt:Issuer"] ?? "cursinet-api";
-        _audience = configuration["Jwt:Audience"] ?? "cursinet-app";
-        _accessTokenExpiry = TimeSpan.Parse(
-            configuration["Jwt:AccessTokenExpiry"] ?? "00:15:00");
-        _refreshTokenExpiry = TimeSpan.Parse(
-            configuration["Jwt:RefreshTokenExpiry"] ?? "7.00:00:00");
+        _tokenService = tokenService;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public (string accessToken, string refreshToken) GenerateTokens(
         Guid userId, string email, UserRole role)
-    {
-        var accessToken = GenerateAccessToken(userId, email, role);
-        var refreshToken = GenerateRefreshToken(userId);
-
-        return (accessToken, refreshToken);
-    }
+        => _tokenService.GenerateTokens(userId, email, role);
 
     public ClaimsPrincipal? ValidateAccessToken(string token)
-    {
-        return ValidateToken(token, _secret);
-    }
+        => _tokenService.ValidateAccessToken(token);
 
     public ClaimsPrincipal? ValidateRefreshToken(string token)
+        => _tokenService.ValidateRefreshToken(token);
+
+    public virtual string GetRefreshToken(string? bodyRefreshToken = null)
     {
-        return ValidateToken(token, _refreshSecret);
-    }
+        var context = _httpContextAccessor.HttpContext;
+        if (context == null) return string.Empty;
 
-    private string GenerateAccessToken(Guid userId, string email, UserRole role)
-    {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var cookieToken = context.Request.Cookies["refreshToken"];
+        if (!string.IsNullOrEmpty(cookieToken))
+            return cookieToken;
 
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.NameIdentifier, userId.ToString()),
-            new(JwtRegisteredClaimNames.Email, email),
-            new(ClaimTypes.Role, role.ToString()),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        };
-
-        var token = new JwtSecurityToken(
-            issuer: _issuer,
-            audience: _audience,
-            claims: claims,
-            expires: DateTime.UtcNow.Add(_accessTokenExpiry),
-            signingCredentials: credentials
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    private string GenerateRefreshToken(Guid userId)
-    {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_refreshSecret));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        };
-
-        var token = new JwtSecurityToken(
-            issuer: _issuer,
-            audience: _audience,
-            claims: claims,
-            expires: DateTime.UtcNow.Add(_refreshTokenExpiry),
-            signingCredentials: credentials
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    private ClaimsPrincipal? ValidateToken(string token, string secret)
-    {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-
-        try
-        {
-            var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = key,
-                ValidIssuer = _issuer,
-                ValidAudience = _audience,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero,
-            }, out _);
-
-            return principal;
-        }
-        catch
-        {
-            return null;
-        }
+        return bodyRefreshToken ?? string.Empty;
     }
 }
