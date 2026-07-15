@@ -11,8 +11,9 @@ public static class DependencyInjectionExtensions
     {
         // Helpers
         services.AddScoped<CookieHelper>();
+        services.AddScoped<TokenHelper>();
         services.AddScoped<IPasswordService, PasswordHelper>();
-        services.AddScoped<ITokenService, TokenHelper>();
+        services.AddScoped<ITokenService, TokenHelperService>();
 
         // Services
         services.AddScoped<IAuthService, AuthService>();
