@@ -10,7 +10,7 @@ public static class DatabaseExtensions
         var connectionString = configuration.GetConnectionString("DefaultConnection")
           ?? throw new InvalidOperationException("DefaultConnection string is not configured. Set it in appsettings.json");
 
-        services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("Infrastructure")));
+        services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("Luna.Infrastructure")));
 
         return services;
     }
