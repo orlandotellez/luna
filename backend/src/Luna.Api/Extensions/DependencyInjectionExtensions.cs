@@ -1,5 +1,6 @@
 using Luna.Api.Helpers;
 using Luna.Application.Features.Auth;
+using Luna.Application.Features.Users;
 using Luna.Application.Common.Interfaces.Repositories;
 using Luna.Application.Common.Interfaces.Services;
 using Luna.Infrastructure.Persistence.Repositories;
@@ -16,6 +17,7 @@ public static class DependencyInjectionExtensions
 
         // Services Application
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<ISessionRepository, SessionRepository>();
 
