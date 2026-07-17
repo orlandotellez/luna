@@ -11,9 +11,9 @@ public record UserDto
     public string? Phone { get; set; }
     public string? Image { get; set; }
     public UserRole Role { get; set; }
-    public LifeStage LifeStage { get; set; }
-    public DateOnly? LastMenstrualPeriod { get; set; }
-    public DateOnly? EstimatedDueDate { get; set; }
+    public LifeStage? LifeStage { get; set; }
+    public PregnancyDto? ActivePregnancy { get; set; }
+    public HealthProfileDto? HealthProfile { get; set; }
     public bool IsActive { get; set; }
     public DateTime? LastSeenAt { get; set; }
     public DateTime CreatedAt { get; set; }

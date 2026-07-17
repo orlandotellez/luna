@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -22,9 +23,7 @@ namespace Luna.Infrastructure.Migrations
                     Phone = table.Column<string>(type: "text", nullable: true),
                     Image = table.Column<string>(type: "text", nullable: true),
                     Role = table.Column<int>(type: "integer", nullable: false),
-                    LifeStage = table.Column<int>(type: "integer", nullable: false),
-                    LastMenstrualPeriod = table.Column<DateOnly>(type: "date", nullable: true),
-                    EstimatedDueDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    LifeStage = table.Column<int>(type: "integer", nullable: true),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     LastSeenAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -86,6 +85,68 @@ namespace Luna.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HealthProfiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    HasRegularCycle = table.Column<bool>(type: "boolean", nullable: true),
+                    CycleLengthDays = table.Column<int>(type: "integer", nullable: true),
+                    PeriodLengthDays = table.Column<int>(type: "integer", nullable: true),
+                    HasEndometriosis = table.Column<bool>(type: "boolean", nullable: false),
+                    HasPcos = table.Column<bool>(type: "boolean", nullable: false),
+                    HasThyroidIssues = table.Column<bool>(type: "boolean", nullable: false),
+                    HasGestationalDiabetes = table.Column<bool>(type: "boolean", nullable: false),
+                    HasFibroids = table.Column<bool>(type: "boolean", nullable: false),
+                    HasHypertension = table.Column<bool>(type: "boolean", nullable: false),
+                    Allergies = table.Column<string>(type: "text", nullable: true),
+                    Medications = table.Column<List<string>>(type: "text[]", nullable: true),
+                    PreviousPregnancies = table.Column<int>(type: "integer", nullable: false),
+                    Surgeries = table.Column<string>(type: "text", nullable: true),
+                    Vaccinations = table.Column<List<string>>(type: "text[]", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HealthProfiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HealthProfiles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pregnancies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastMenstrualPeriod = table.Column<DateOnly>(type: "date", nullable: true),
+                    EstimatedDueDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    CurrentWeek = table.Column<int>(type: "integer", nullable: false),
+                    IsFirstPregnancy = table.Column<bool>(type: "boolean", nullable: true),
+                    PregnancyCount = table.Column<int>(type: "integer", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    EndedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Notes = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pregnancies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pregnancies_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sessions",
                 columns: table => new
                 {
@@ -140,6 +201,17 @@ namespace Luna.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_HealthProfiles_UserId",
+                table: "HealthProfiles",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pregnancies_UserId",
+                table: "Pregnancies",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Sessions_UserId",
                 table: "Sessions",
                 column: "UserId");
@@ -156,6 +228,12 @@ namespace Luna.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "HealthProfiles");
+
+            migrationBuilder.DropTable(
+                name: "Pregnancies");
 
             migrationBuilder.DropTable(
                 name: "Sessions");

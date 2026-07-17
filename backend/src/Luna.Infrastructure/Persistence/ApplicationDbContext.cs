@@ -9,6 +9,8 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<User> Users => Set<User>();
     public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
+    public DbSet<HealthProfile> HealthProfiles => Set<HealthProfile>();
+    public DbSet<Pregnancy> Pregnancies => Set<Pregnancy>();
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<Session> Sessions => Set<Session>();
     public DbSet<Verification> Verifications => Set<Verification>();

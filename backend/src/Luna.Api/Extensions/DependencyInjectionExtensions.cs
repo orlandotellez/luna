@@ -21,6 +21,8 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<ISessionRepository, SessionRepository>();
+        services.AddScoped<IPregnancyRepository, PregnancyRepository>();
+        services.AddScoped<IHealthProfileRepository, HealthProfileRepository>();
 
 
         // Services Infrastructure

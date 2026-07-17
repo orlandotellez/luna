@@ -12,14 +12,20 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserProfileRepository _userProfileRepository;
+    private readonly IPregnancyRepository _pregnancyRepository;
+    private readonly IHealthProfileRepository _healthProfileRepository;
 
     public UserService(
         IUserRepository userRepository,
-        IUserProfileRepository userProfileRepository
+        IUserProfileRepository userProfileRepository,
+        IPregnancyRepository pregnancyRepository,
+        IHealthProfileRepository healthProfileRepository
         )
     {
         _userRepository = userRepository;
         _userProfileRepository = userProfileRepository;
+        _pregnancyRepository = pregnancyRepository;
+        _healthProfileRepository = healthProfileRepository;
     }
 
     public async Task<UserDto> GetMyProfileAsync(Guid userId)
@@ -28,6 +34,10 @@ public class UserService : IUserService
         if (user is null) throw AppExceptions.NotFound("User NotFound");
 
         user.Profile = await _userProfileRepository.GetByUserIdAsync(userId);
+        user.HealthProfile = await _healthProfileRepository.GetByUserIdAsync(userId);
+
+        // load pregnancies
+        var pregnancies = await _pregnancyRepository.GetByUserIdAsync(userId);
 
         return user.MapUserToDto();
     }
@@ -73,7 +83,6 @@ public class UserService : IUserService
         return user.MapUserToDto();
     }
 
-
     public async Task<UserDto> UpdateLifeStageAsync(Guid userId, UpdateLifeStageRequest request)
     {
         var user = await _userRepository.GetByIdAsync(userId);
@@ -83,21 +92,62 @@ public class UserService : IUserService
 
         if (request.LifeStage == LifeStage.Pregnancy)
         {
-            user.LastMenstrualPeriod = request.LastMenstrualPeriod;
-            user.EstimatedDueDate = request.EstimatedDueDate;
+            // Buscar embarazo activo o crear uno nuevo
+            var pregnancy = await _pregnancyRepository.GetActiveByUserIdAsync(userId);
+
+            if (pregnancy is null)
+            {
+                pregnancy = new Pregnancy
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = userId,
+                    LastMenstrualPeriod = request.LastMenstrualPeriod,
+                    EstimatedDueDate = request.EstimatedDueDate!.Value,
+                    CurrentWeek = CalculateCurrentWeek(request.EstimatedDueDate!.Value),
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+                await _pregnancyRepository.CreateAsync(pregnancy);
+            }
+            else
+            {
+                pregnancy.LastMenstrualPeriod = request.LastMenstrualPeriod ?? pregnancy.LastMenstrualPeriod;
+                pregnancy.EstimatedDueDate = request.EstimatedDueDate ?? pregnancy.EstimatedDueDate;
+                pregnancy.UpdatedAt = DateTime.UtcNow;
+                await _pregnancyRepository.UpdateAsync(pregnancy);
+            }
         }
         else
         {
-            user.LastMenstrualPeriod = null;
-            user.EstimatedDueDate = null;
+            // Si cambia a otra etapa, desactivar embarazo activo
+            var activePregnancy = await _pregnancyRepository.GetActiveByUserIdAsync(userId);
+            if (activePregnancy is not null)
+            {
+                activePregnancy.IsActive = false;
+                activePregnancy.EndedAt = DateTime.UtcNow;
+                activePregnancy.UpdatedAt = DateTime.UtcNow;
+                await _pregnancyRepository.UpdateAsync(activePregnancy);
+            }
         }
 
         user.UpdatedAt = DateTime.UtcNow;
+        await _userRepository.UpdateAsync(user);
 
-        var updatedUser = await _userRepository.UpdateAsync(user);
+        // Cargar relaciones para el DTO
+        user.Profile = await _userProfileRepository.GetByUserIdAsync(userId);
+        user.HealthProfile = await _healthProfileRepository.GetByUserIdAsync(userId);
 
-        updatedUser.Profile = await _userProfileRepository.GetByUserIdAsync(userId);
-
-        return updatedUser.MapUserToDto();
+        var result = user.MapUserToDto();
+        return result;
+    }
+    private static int CalculateCurrentWeek(DateOnly estimatedDueDate)
+    {
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var daysUntilDue = estimatedDueDate.DayNumber - today.DayNumber;
+        var weeks = (280 - daysUntilDue) / 7; // 280 días = 40 semanas
+        return Math.Clamp(weeks, 0, 42);
     }
 }
+
+
