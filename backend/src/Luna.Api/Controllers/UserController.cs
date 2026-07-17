@@ -30,4 +30,16 @@ public class UsersController : ControllerBase
 
         return Ok(profile);
     }
+
+    [HttpPut("me")]
+    public async Task<ActionResult<UserDto>> UpdateMyProfil([FromBody] UpdateUserProfileRequest request)
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null) return Unauthorized(new { error = "Invalid token" });
+
+        var profile = await _userService.UpdateUserProfileAsync(userId.Value, request);
+
+        return Ok(profile);
+    }
 }

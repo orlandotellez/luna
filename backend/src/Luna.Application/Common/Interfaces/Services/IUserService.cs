@@ -5,4 +5,5 @@ namespace Luna.Application.Common.Interfaces.Services;
 public interface IUserService
 {
     Task<UserDto> GetMyProfileAsync(Guid userId);
+    Task<UserDto> UpdateUserProfileAsync(Guid userId, UpdateUserProfileRequest request);
 }

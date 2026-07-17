@@ -26,3 +26,10 @@ public record UserFilter(
     bool? IsActive,
     bool? IncludeDeleted
 );
+
+public record UpdateUserProfileRequest(
+    string? Name,
+    string? Phone,
+    string? Bio,
+    string? UserName
+);

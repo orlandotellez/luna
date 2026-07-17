@@ -23,4 +23,25 @@ public class UserService : IUserService
 
         return user.MapUserToDto();
     }
+
+    public async Task<UserDto> UpdateUserProfileAsync(Guid userId, UpdateUserProfileRequest request)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        if (request.Name is not null) user.Name = request.Name;
+
+        if (request.Phone is not null) user.Phone = request.Phone;
+
+        if (request.Bio is not null) user.Bio = request.Bio;
+
+        if (request.UserName is not null) user.UserName = request.UserName;
+
+        user.UpdatedAt = DateTime.UtcNow;
+
+        var updatedUser = await _userRepository.UpdateAsync(user);
+
+        return updatedUser.MapUserToDto();
+    }
 }
