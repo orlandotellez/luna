@@ -11,8 +11,6 @@ public record UserDto
     public string? Phone { get; set; }
     public string? Image { get; set; }
     public UserRole Role { get; set; }
-    public string? UserName { get; set; }
-    public string? Bio { get; set; }
     public LifeStage LifeStage { get; set; }
     public DateOnly? LastMenstrualPeriod { get; set; }
     public DateOnly? EstimatedDueDate { get; set; }
@@ -22,4 +20,6 @@ public record UserDto
     public DateTime? DeletedAt { get; set; }
     public Guid? DeletedByUserId { get; set; }
     public string? DeletedByName { get; set; }
+
+    public UserProfileDto? Profile { get; set; }
 }
