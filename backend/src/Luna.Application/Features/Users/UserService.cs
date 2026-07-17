@@ -3,6 +3,7 @@ using Luna.Application.Common.Interfaces.Repositories;
 using Luna.Application.Common.Models;
 using Luna.Application.Common.Mapping;
 using Luna.Domain.Exceptions;
+using Luna.Domain.Enums;
 
 namespace Luna.Application.Features.Users;
 
@@ -44,6 +45,32 @@ public class UserService : IUserService
         if (request.Bio is not null) user.Bio = request.Bio;
 
         if (request.UserName is not null) user.UserName = request.UserName;
+
+        user.UpdatedAt = DateTime.UtcNow;
+
+        var updatedUser = await _userRepository.UpdateAsync(user);
+
+        return updatedUser.MapUserToDto();
+    }
+
+
+    public async Task<UserDto> UpdateLifeStageAsync(Guid userId, UpdateLifeStageRequest request)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        user.LifeStage = request.LifeStage;
+
+        if (request.LifeStage == LifeStage.Pregnancy)
+        {
+            user.LastMenstrualPeriod = request.LastMenstrualPeriod;
+            user.EstimatedDueDate = request.EstimatedDueDate;
+        }
+        else
+        {
+            user.LastMenstrualPeriod = null;
+            user.EstimatedDueDate = null;
+        }
 
         user.UpdatedAt = DateTime.UtcNow;
 

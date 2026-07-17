@@ -30,6 +30,17 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Bio).HasColumnName("bio");
 
+        builder.Property(u => u.LifeStage)
+          .HasColumnName("life_stage")
+          .IsRequired()
+          .HasDefaultValue(LifeStage.ActiveCycle)
+          .HasConversion<string>();
+
+        builder.Property(u => u.LastMenstrualPeriod)
+          .HasColumnName("last_menstrual_period");
+
+        builder.Property(u => u.EstimatedDueDate)
+          .HasColumnName("estimated_due_date");
 
         builder.Property(u => u.IsActive).HasColumnName("is_active").IsRequired().HasDefaultValue(true);
 

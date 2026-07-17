@@ -13,6 +13,9 @@ public class User
     public UserRole Role { get; set; }
     public string? UserName { get; set; }
     public string? Bio { get; set; }
+    public LifeStage LifeStage { get; set; }
+    public DateOnly? LastMenstrualPeriod { get; set; }
+    public DateOnly? EstimatedDueDate { get; set; }
     public bool IsActive { get; set; }
     public DateTime? LastSeenAt { get; set; }
     public DateTime CreatedAt { get; set; }
