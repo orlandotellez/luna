@@ -55,6 +55,13 @@ public class UserRepository : IUserRepository
         return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.DeletedAt == null);
     }
 
+    public async Task<User?> GetByUserNameAsync(string userName)
+    {
+        return await _context.Users.FirstOrDefaultAsync(
+            u => u.UserName == userName && u.DeletedAt == null
+        );
+    }
+
     public async Task<User> UpdateAsync(User user)
     {
         _context.Users.Update(user);

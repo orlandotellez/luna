@@ -27,8 +27,15 @@ public class UserService : IUserService
     public async Task<UserDto> UpdateUserProfileAsync(Guid userId, UpdateUserProfileRequest request)
     {
         var user = await _userRepository.GetByIdAsync(userId);
-
         if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+
+        if (request.UserName is not null && !string.Equals(request.UserName, user.UserName, StringComparison.OrdinalIgnoreCase))
+        {
+            var existingUser = await _userRepository.GetByUserNameAsync(request.UserName);
+
+            if (existingUser is not null) throw AppExceptions.Conflict("UserName is already taken");
+        }
 
         if (request.Name is not null) user.Name = request.Name;
 
