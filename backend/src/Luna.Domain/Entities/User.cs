@@ -11,7 +11,7 @@ public class User
     public string? Phone { get; set; }
     public string? Image { get; set; }
     public UserRole Role { get; set; }
-    public LifeStage LifeStage { get; set; }
+    public LifeStage? LifeStage { get; set; }
     public DateOnly? LastMenstrualPeriod { get; set; }
     public DateOnly? EstimatedDueDate { get; set; }
     public bool IsActive { get; set; }

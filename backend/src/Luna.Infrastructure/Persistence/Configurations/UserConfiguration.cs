@@ -27,7 +27,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.LifeStage)
           .HasColumnName("life_stage")
-          .IsRequired()
           .HasDefaultValue(LifeStage.ActiveCycle)
           .HasConversion<string>();
 
