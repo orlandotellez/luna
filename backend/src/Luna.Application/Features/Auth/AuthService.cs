@@ -12,6 +12,7 @@ namespace Luna.Application.Features.Auth;
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IUserProfileRepository _userProfileRepository;
     private readonly IAccountRepository _accountRepository;
     private readonly ISessionRepository _sessionRepository;
     private readonly IPasswordService _passwordService;
@@ -19,6 +20,7 @@ public class AuthService : IAuthService
 
     public AuthService(
         IUserRepository userRepository,
+        IUserProfileRepository userProfileRepository,
         IAccountRepository accountRepository,
         ISessionRepository sessionRepository,
         IPasswordService passwordService,
@@ -26,6 +28,7 @@ public class AuthService : IAuthService
         )
     {
         _userRepository = userRepository;
+        _userProfileRepository = userProfileRepository;
         _accountRepository = accountRepository;
         _sessionRepository = sessionRepository;
         _passwordService = passwordService;
@@ -56,6 +59,16 @@ public class AuthService : IAuthService
 
         await _userRepository.CreateAsync(user);
 
+        var profile = new UserProfile
+        {
+            Id = Guid.NewGuid(),
+            UserId = user.Id,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        await _userProfileRepository.CreateAsync(profile);
+
         // create credentials account
         var account = new Account
         {
@@ -85,6 +98,8 @@ public class AuthService : IAuthService
         };
 
         await _sessionRepository.CreateAsync(session);
+
+        user.Profile = profile;
 
         var response = new AuthResponse
         {

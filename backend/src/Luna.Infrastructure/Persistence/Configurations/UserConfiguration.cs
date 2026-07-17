@@ -25,14 +25,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Role).HasColumnName("role").IsRequired().HasDefaultValue(UserRole.User);
 
-        builder.Property(u => u.UserName).HasColumnName("username").HasMaxLength(50);
-        builder.HasIndex(u => u.UserName).IsUnique();
-
-        builder.Property(u => u.Bio).HasColumnName("bio");
-
         builder.Property(u => u.LifeStage)
           .HasColumnName("life_stage")
-          .IsRequired()
           .HasDefaultValue(LifeStage.ActiveCycle)
           .HasConversion<string>();
 

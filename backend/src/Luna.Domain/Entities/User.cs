@@ -11,9 +11,7 @@ public class User
     public string? Phone { get; set; }
     public string? Image { get; set; }
     public UserRole Role { get; set; }
-    public string? UserName { get; set; }
-    public string? Bio { get; set; }
-    public LifeStage LifeStage { get; set; }
+    public LifeStage? LifeStage { get; set; }
     public DateOnly? LastMenstrualPeriod { get; set; }
     public DateOnly? EstimatedDueDate { get; set; }
     public bool IsActive { get; set; }
@@ -24,5 +22,7 @@ public class User
     public Guid? DeletedByUserId { get; set; } // Quien eliminó
     public string? DeletedByName { get; set; } // Nombre de quien eliminó 
     public int FailedLoginAttempts { get; set; } // Intentos fallidos 
-    public DateTime? LockoutEnd { get; set; } // Fin del bloqueo
+    public DateTime? LockoutEnd { get; set; } // Fin del bloqueo 
+
+    public UserProfile? Profile { get; set; }
 }

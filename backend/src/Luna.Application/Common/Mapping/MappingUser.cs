@@ -19,8 +19,6 @@ public static class MappingUser
             Phone = user.Phone,
             Image = user.Image,
             Role = user.Role,
-            UserName = user.UserName,
-            Bio = user.Bio,
             LifeStage = user.LifeStage,
             LastMenstrualPeriod = user.LastMenstrualPeriod,
             EstimatedDueDate = user.EstimatedDueDate,
@@ -30,6 +28,21 @@ public static class MappingUser
             DeletedAt = user.DeletedAt,
             DeletedByUserId = user.DeletedByUserId,
             DeletedByName = user.DeletedByName,
+            Profile = user.Profile?.MapUserProfileToDto(),
+        };
+    }
+
+    public static UserProfileDto MapUserProfileToDto(this UserProfile profile)
+    {
+        if (profile == null) throw AppExceptions.UnprocessableEntity(nameof(profile));
+
+        return new UserProfileDto
+        {
+            UserName = profile.UserName,
+            Bio = profile.Bio,
+            DateOfBirth = profile.DateOfBirth,
+            DepartmentId = profile.DepartmentId,
+            MunicipalityId = profile.MunicipalityId
         };
     }
 }

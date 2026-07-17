@@ -18,6 +18,7 @@ public static class DependencyInjectionExtensions
         // Services Application
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserProfileRepository, UserProfileRepository>();
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<ISessionRepository, SessionRepository>();
 
