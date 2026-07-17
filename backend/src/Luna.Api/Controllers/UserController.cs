@@ -42,4 +42,16 @@ public class UsersController : ControllerBase
 
         return Ok(profile);
     }
+
+    [HttpPut("me/life-stage")]
+    public async Task<ActionResult<UserDto>> UpdateLifeStage([FromBody] UpdateLifeStageRequest request)
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null) return Unauthorized(new { error = "Invalid token" });
+
+        var result = await _userService.UpdateLifeStageAsync(userId.Value, request);
+
+        return Ok(result);
+    }
 }

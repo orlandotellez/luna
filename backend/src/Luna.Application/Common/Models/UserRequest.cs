@@ -33,3 +33,9 @@ public record UpdateUserProfileRequest(
     string? Bio,
     string? UserName
 );
+
+public record UpdateLifeStageRequest(
+    LifeStage LifeStage,
+    DateOnly? LastMenstrualPeriod,
+    DateOnly? EstimatedDueDate
+);
