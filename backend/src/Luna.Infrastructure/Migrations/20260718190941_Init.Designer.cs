@@ -13,7 +13,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Luna.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260717234654_Init")]
+    [Migration("20260718190941_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -92,25 +92,25 @@ namespace Luna.Infrastructure.Migrations
                     b.Property<int?>("CycleLengthDays")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("HasEndometriosis")
+                    b.Property<bool?>("HasEndometriosis")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasFibroids")
+                    b.Property<bool?>("HasFibroids")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasGestationalDiabetes")
+                    b.Property<bool?>("HasGestationalDiabetes")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasHypertension")
+                    b.Property<bool?>("HasHypertension")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasPcos")
+                    b.Property<bool?>("HasPcos")
                         .HasColumnType("boolean");
 
                     b.Property<bool?>("HasRegularCycle")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasThyroidIssues")
+                    b.Property<bool?>("HasThyroidIssues")
                         .HasColumnType("boolean");
 
                     b.PrimitiveCollection<List<string>>("Medications")

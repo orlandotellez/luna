@@ -70,4 +70,17 @@ public class UsersController : ControllerBase
 
         return Ok(healthProfile);
     }
+
+    [HttpPut("me/health-profile")]
+    public async Task<ActionResult<HealthProfileDto>> UpdateHealthProfile([FromBody] UpdateHealthProfileRequest request)
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var healthProfile = await _userService.UpdateHealthProfileAsync(userId.Value, request);
+
+        return Ok(healthProfile);
+    }
 }

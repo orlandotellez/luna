@@ -89,25 +89,25 @@ namespace Luna.Infrastructure.Migrations
                     b.Property<int?>("CycleLengthDays")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("HasEndometriosis")
+                    b.Property<bool?>("HasEndometriosis")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasFibroids")
+                    b.Property<bool?>("HasFibroids")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasGestationalDiabetes")
+                    b.Property<bool?>("HasGestationalDiabetes")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasHypertension")
+                    b.Property<bool?>("HasHypertension")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasPcos")
+                    b.Property<bool?>("HasPcos")
                         .HasColumnType("boolean");
 
                     b.Property<bool?>("HasRegularCycle")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasThyroidIssues")
+                    b.Property<bool?>("HasThyroidIssues")
                         .HasColumnType("boolean");
 
                     b.PrimitiveCollection<List<string>>("Medications")
