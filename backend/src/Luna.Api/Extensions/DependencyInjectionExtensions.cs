@@ -5,6 +5,7 @@ using Luna.Application.Common.Interfaces.Repositories;
 using Luna.Application.Common.Interfaces.Services;
 using Luna.Infrastructure.Persistence.Repositories;
 using Luna.Infrastructure.Services;
+using Luna.Infrastructure.Adapters.Cloud;
 
 namespace Luna.Api.Extensions;
 
@@ -28,6 +29,8 @@ public static class DependencyInjectionExtensions
         // Services Infrastructure
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IPasswordService, PasswordService>();
+        services.Configure<R2Options>(configuration.GetSection(R2Options.SectionName));
+        services.AddScoped<IFileStorageService, R2StorageService>();
 
         // Repositories
         services.AddScoped<IUserRepository, UserRepository>();
