@@ -12,10 +12,15 @@ namespace Luna.Api.Controllers;
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IFileStorageService _fileStorageService;
 
-    public UsersController(IUserService userService)
+    public UsersController(
+        IUserService userService,
+IFileStorageService fileStorageService
+        )
     {
         _userService = userService;
+        _fileStorageService = fileStorageService;
     }
 
     [HttpGet("me")]
@@ -29,6 +34,39 @@ public class UsersController : ControllerBase
         var profile = await _userService.GetMyProfileAsync(userId.Value);
 
         return Ok(profile);
+    }
+
+    [HttpPut("me/avatar")]
+    [RequestSizeLimit(10 * 1024 * 1024)] // 10 MB máximo
+    public async Task<ActionResult<UserDto>> UpdateAvatar(IFormFile file, CancellationToken ct)
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        if (file == null || file.Length == 0)
+            return BadRequest(new { error = "No file provided or file is empty." });
+
+        // Validate extension
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        var allowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ".jpg", ".jpeg", ".png", ".gif", ".webp"
+    };
+
+        if (!allowedExtensions.Contains(extension))
+            return BadRequest(new { error = $"File type '{extension}' is not supported. Allowed: jpg, jpeg, png, gif, webp." });
+
+        if (file.Length > 10 * 1024 * 1024)
+            return BadRequest(new { error = "File exceeds maximum size of 10 MB." });
+
+        await using var stream = file.OpenReadStream();
+        var imageUrl = await _fileStorageService.UploadImageAsync(stream, file.FileName, ct);
+
+        var result = await _userService.UpdateAvatarAsync(userId.Value, imageUrl);
+
+        return Ok(result);
     }
 
     [HttpPut("me")]

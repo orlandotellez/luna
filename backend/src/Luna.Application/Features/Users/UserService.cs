@@ -43,6 +43,22 @@ public class UserService : IUserService
         return user.MapUserToDto();
     }
 
+    public async Task<UserDto> UpdateAvatarAsync(Guid userId, string imageUrl)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        user.Image = imageUrl;
+        user.UpdatedAt = DateTime.UtcNow;
+
+        await _userRepository.UpdateAsync(user);
+
+        user.Profile = await _userProfileRepository.GetByUserIdAsync(userId);
+        user.HealthProfile = await _healthProfileRepository.GetByUserIdAsync(userId);
+
+        return user.MapUserToDto();
+    }
+
     public async Task<UserDto> UpdateUserProfileAsync(Guid userId, UpdateUserProfileRequest request)
     {
         var user = await _userRepository.GetByIdAsync(userId);
