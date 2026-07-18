@@ -1,6 +1,6 @@
 using Luna.Application.Common.Interfaces.Services;
 using Luna.Application.Common.Interfaces.Repositories;
-using Luna.Application.Common.Models;
+using Luna.Application.Common.Models.User;
 using Luna.Application.Common.Mapping;
 using Luna.Application.Common.Helpers;
 using Luna.Domain.Exceptions;

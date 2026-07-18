@@ -1,6 +1,6 @@
 using Luna.Domain.Enums;
 
-namespace Luna.Application.Common.Models;
+namespace Luna.Application.Common.Models.User;
 
 public record UserDto
 {

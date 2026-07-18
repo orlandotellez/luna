@@ -1,4 +1,4 @@
-using Luna.Application.Common.Models;
+using Luna.Application.Common.Models.User;
 using Luna.Domain.Entities;
 using Luna.Domain.Exceptions;
 

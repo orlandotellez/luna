@@ -1,4 +1,4 @@
-namespace Luna.Application.Common.Models;
+namespace Luna.Application.Common.Models.Auth;
 
 public record LoginRequest(
     string Email,

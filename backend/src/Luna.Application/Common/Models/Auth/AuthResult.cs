@@ -1,4 +1,6 @@
-namespace Luna.Application.Common.Models;
+using Luna.Application.Common.Models.User;
+
+namespace Luna.Application.Common.Models.Auth;
 
 public record AuthResponse
 {
