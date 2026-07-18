@@ -1,6 +1,7 @@
 using Luna.Application.Common.Interfaces.Services;
 using Luna.Application.Common.Interfaces.Repositories;
 using Luna.Application.Common.Models.User;
+using Luna.Application.Common.Models.Cycle;
 using Luna.Application.Common.Mapping;
 using Luna.Application.Common.Helpers;
 using Luna.Domain.Exceptions;
@@ -208,6 +209,41 @@ public class UserService : IUserService
             await _healthProfileRepository.UpdateAsync(healthProfile);
 
         return healthProfile.MapHealthProfileToDto()!;
+    }
+
+    public async Task<CycleCurrentDto> GetCurrentCycleAsync(Guid userId)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        var healthProfile = await _healthProfileRepository.GetByUserIdAsync(userId);
+
+        var activePregnancy = await _pregnancyRepository.GetActiveByUserIdAsync(userId);
+
+        var result = new CycleCurrentDto
+        {
+            LifeStage = user.LifeStage ?? LifeStage.ActiveCycle,
+            CycleLengthDays = healthProfile?.CycleLengthDays,
+            PeriodLengthDays = healthProfile?.PeriodLengthDays,
+            HasRegularCycle = healthProfile?.HasRegularCycle,
+            ActivePregnancy = activePregnancy.MapPregnancyToDto(),
+            Predictions = null
+        };
+
+        if (healthProfile?.HasRegularCycle == true && healthProfile.CycleLengthDays.HasValue)
+        {
+            result.Predictions = new CyclePredictionDto
+            {
+                CurrentPhase = "regular_cycle_configured",
+            };
+        }
+
+        if (activePregnancy is not null)
+        {
+            result.LifeStage = LifeStage.Pregnancy;
+        }
+
+        return result;
     }
 }
 

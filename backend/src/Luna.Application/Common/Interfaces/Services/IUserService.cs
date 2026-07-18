@@ -1,4 +1,5 @@
 using Luna.Application.Common.Models.User;
+using Luna.Application.Common.Models.Cycle;
 
 namespace Luna.Application.Common.Interfaces.Services;
 
@@ -10,4 +11,5 @@ public interface IUserService
     Task<HealthProfileDto?> GetHealthProfileAsync(Guid userId);
     Task<HealthProfileDto> UpdateHealthProfileAsync(Guid userId, UpdateHealthProfileRequest request);
     Task<UserDto> UpdateAvatarAsync(Guid userId, string imageUrl);
+    Task<CycleCurrentDto> GetCurrentCycleAsync(Guid userId);
 }
