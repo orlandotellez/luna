@@ -675,10 +675,10 @@ Todos los servicios que se inyectan deben estar registrados, directa o indirecta
 
 ```bash
 # Crear migración
-dotnet ef migrations add Nombre -s src/Api/Api.csproj -p src/Infrastructure/Infrastructure.csproj
+dotnet ef migrations add Nombre -s src/Luna.Api/Luna.Api.csproj -p src/Luna.Infrastructure/Luna.Infrastructure.csproj
 
 # Aplicar migraciones
-dotnet ef database update -s src/Api/Api.csproj -p src/Infrastructure/Infrastructure.csproj
+dotnet ef database update -s src/Luna.Api/Luna.Api.csproj -p src/Luna.Infrastructure/Luna.Infrastructure.csproj
 
 # Remover última migración (no aplicada)
 dotnet ef migrations remove -s src/Api/Api.csproj -p src/Infrastructure/Infrastructure.csproj

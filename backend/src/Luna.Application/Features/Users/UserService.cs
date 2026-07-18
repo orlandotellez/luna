@@ -2,6 +2,7 @@ using Luna.Application.Common.Interfaces.Services;
 using Luna.Application.Common.Interfaces.Repositories;
 using Luna.Application.Common.Models;
 using Luna.Application.Common.Mapping;
+using Luna.Application.Common.Helpers;
 using Luna.Domain.Exceptions;
 using Luna.Domain.Enums;
 using Luna.Domain.Entities;
@@ -38,6 +39,22 @@ public class UserService : IUserService
 
         // load pregnancies
         var pregnancies = await _pregnancyRepository.GetByUserIdAsync(userId);
+
+        return user.MapUserToDto();
+    }
+
+    public async Task<UserDto> UpdateAvatarAsync(Guid userId, string imageUrl)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        user.Image = imageUrl;
+        user.UpdatedAt = DateTime.UtcNow;
+
+        await _userRepository.UpdateAsync(user);
+
+        user.Profile = await _userProfileRepository.GetByUserIdAsync(userId);
+        user.HealthProfile = await _healthProfileRepository.GetByUserIdAsync(userId);
 
         return user.MapUserToDto();
     }
@@ -103,7 +120,7 @@ public class UserService : IUserService
                     UserId = userId,
                     LastMenstrualPeriod = request.LastMenstrualPeriod,
                     EstimatedDueDate = request.EstimatedDueDate!.Value,
-                    CurrentWeek = CalculateCurrentWeek(request.EstimatedDueDate!.Value),
+                    CurrentWeek = PregnancyHelper.CalculateCurrentWeek(request.EstimatedDueDate!.Value),
                     IsActive = true,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
@@ -191,14 +208,6 @@ public class UserService : IUserService
             await _healthProfileRepository.UpdateAsync(healthProfile);
 
         return healthProfile.MapHealthProfileToDto()!;
-    }
-
-    private static int CalculateCurrentWeek(DateOnly estimatedDueDate)
-    {
-        var today = DateOnly.FromDateTime(DateTime.UtcNow);
-        var daysUntilDue = estimatedDueDate.DayNumber - today.DayNumber;
-        var weeks = (280 - daysUntilDue) / 7; // 280 días = 40 semanas
-        return Math.Clamp(weeks, 0, 42);
     }
 }
 
