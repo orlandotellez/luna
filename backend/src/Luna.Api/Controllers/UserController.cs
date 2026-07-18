@@ -54,4 +54,20 @@ public class UsersController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("me/health-profile")]
+    public async Task<ActionResult<HealthProfileDto>> GetHealthProfile()
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var healthProfile = await _userService.GetHealthProfileAsync(userId.Value);
+
+        if (healthProfile is null)
+            return Ok(new HealthProfileDto()); // Devuelve un DTO vacío en lugar de null
+
+        return Ok(healthProfile);
+    }
 }
