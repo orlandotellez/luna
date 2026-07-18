@@ -20,8 +20,8 @@ public static class MappingUser
             Image = user.Image,
             Role = user.Role,
             LifeStage = user.LifeStage,
-            LastMenstrualPeriod = user.LastMenstrualPeriod,
-            EstimatedDueDate = user.EstimatedDueDate,
+            ActivePregnancy = user.Pregnancies?.FirstOrDefault(p => p.IsActive).MapPregnancyToDto(),
+            HealthProfile = user.HealthProfile.MapHealthProfileToDto(),
             IsActive = user.IsActive,
             LastSeenAt = user.LastSeenAt,
             CreatedAt = user.CreatedAt,
@@ -43,6 +43,47 @@ public static class MappingUser
             DateOfBirth = profile.DateOfBirth,
             DepartmentId = profile.DepartmentId,
             MunicipalityId = profile.MunicipalityId
+        };
+    }
+
+    public static PregnancyDto? MapPregnancyToDto(this Pregnancy? pregnancy)
+    {
+        if (pregnancy is null) return null;
+
+        return new PregnancyDto
+        {
+            Id = pregnancy.Id,
+            LastMenstrualPeriod = pregnancy.LastMenstrualPeriod,
+            EstimatedDueDate = pregnancy.EstimatedDueDate,
+            CurrentWeek = pregnancy.CurrentWeek,
+            IsFirstPregnancy = pregnancy.IsFirstPregnancy,
+            PregnancyCount = pregnancy.PregnancyCount,
+            IsActive = pregnancy.IsActive,
+            EndedAt = pregnancy.EndedAt,
+            Notes = pregnancy.Notes
+        };
+    }
+
+    public static HealthProfileDto? MapHealthProfileToDto(this HealthProfile? profile)
+    {
+        if (profile is null) return null;
+
+        return new HealthProfileDto
+        {
+            HasRegularCycle = profile.HasRegularCycle,
+            CycleLengthDays = profile.CycleLengthDays,
+            PeriodLengthDays = profile.PeriodLengthDays,
+            HasEndometriosis = profile.HasEndometriosis,
+            HasPcos = profile.HasPcos,
+            HasThyroidIssues = profile.HasThyroidIssues,
+            HasGestationalDiabetes = profile.HasGestationalDiabetes,
+            HasFibroids = profile.HasFibroids,
+            HasHypertension = profile.HasHypertension,
+            Allergies = profile.Allergies,
+            Medications = profile.Medications,
+            PreviousPregnancies = profile.PreviousPregnancies,
+            Surgeries = profile.Surgeries,
+            Vaccinations = profile.Vaccinations
         };
     }
 }

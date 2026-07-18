@@ -30,12 +30,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
           .HasDefaultValue(LifeStage.ActiveCycle)
           .HasConversion<string>();
 
-        builder.Property(u => u.LastMenstrualPeriod)
-          .HasColumnName("last_menstrual_period");
-
-        builder.Property(u => u.EstimatedDueDate)
-          .HasColumnName("estimated_due_date");
-
         builder.Property(u => u.IsActive).HasColumnName("is_active").IsRequired().HasDefaultValue(true);
 
         builder.Property(u => u.LastSeenAt).HasColumnName("last_seen_at");

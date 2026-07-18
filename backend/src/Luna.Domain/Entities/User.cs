@@ -12,8 +12,8 @@ public class User
     public string? Image { get; set; }
     public UserRole Role { get; set; }
     public LifeStage? LifeStage { get; set; }
-    public DateOnly? LastMenstrualPeriod { get; set; }
-    public DateOnly? EstimatedDueDate { get; set; }
+    public HealthProfile? HealthProfile { get; set; }  // 1:1
+    public ICollection<Pregnancy> Pregnancies { get; set; } = new List<Pregnancy>();  // 1:N
     public bool IsActive { get; set; }
     public DateTime? LastSeenAt { get; set; }
     public DateTime CreatedAt { get; set; }
