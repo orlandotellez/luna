@@ -141,6 +141,14 @@ public class UserService : IUserService
         var result = user.MapUserToDto();
         return result;
     }
+
+    public async Task<HealthProfileDto?> GetHealthProfileAsync(Guid userId)
+    {
+        var healthProfile = await _healthProfileRepository.GetByUserIdAsync(userId);
+
+        return healthProfile.MapHealthProfileToDto();
+    }
+
     private static int CalculateCurrentWeek(DateOnly estimatedDueDate)
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);
