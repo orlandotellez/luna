@@ -1,5 +1,5 @@
 using Luna.Application.Common.Interfaces.Services;
-using Luna.Application.Common.Models;
+using Luna.Application.Common.Models.Auth;
 using Luna.Api.Helpers;
 using Microsoft.AspNetCore.Mvc;
 

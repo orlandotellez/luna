@@ -1,5 +1,5 @@
 using Luna.Application.Common.Interfaces.Repositories;
-using Luna.Application.Common.Models;
+using Luna.Application.Common.Models.User;
 using Luna.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

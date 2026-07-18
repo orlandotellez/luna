@@ -1,4 +1,4 @@
-using Luna.Application.Common.Models;
+using Luna.Application.Common.Models.User;
 
 namespace Luna.Application.Common.Interfaces.Services;
 
