@@ -149,6 +149,50 @@ public class UserService : IUserService
         return healthProfile.MapHealthProfileToDto();
     }
 
+    public async Task<HealthProfileDto> UpdateHealthProfileAsync(Guid userId, UpdateHealthProfileRequest request)
+    {
+        var healthProfile = await _healthProfileRepository.GetByUserIdAsync(userId);
+        bool isNew = false;
+
+        if (healthProfile is null)
+        {
+            healthProfile = new HealthProfile
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+            isNew = true;
+        }
+
+        if (request.HasRegularCycle is not null) healthProfile.HasRegularCycle = request.HasRegularCycle;
+        if (request.CycleLengthDays is not null) healthProfile.CycleLengthDays = request.CycleLengthDays;
+        if (request.PeriodLengthDays is not null) healthProfile.PeriodLengthDays = request.PeriodLengthDays;
+
+        healthProfile.HasEndometriosis = request.HasEndometriosis ?? false;
+        healthProfile.HasPcos = request.HasPcos ?? false;
+        healthProfile.HasThyroidIssues = request.HasThyroidIssues ?? false;
+        healthProfile.HasGestationalDiabetes = request.HasGestationalDiabetes ?? false;
+        healthProfile.HasFibroids = request.HasFibroids ?? false;
+        healthProfile.HasHypertension = request.HasHypertension ?? false;
+
+        if (request.Allergies is not null) healthProfile.Allergies = request.Allergies;
+        if (request.Medications is not null) healthProfile.Medications = request.Medications;
+        if (request.PreviousPregnancies is not null) healthProfile.PreviousPregnancies = request.PreviousPregnancies.Value;
+        if (request.Surgeries is not null) healthProfile.Surgeries = request.Surgeries;
+        if (request.Vaccinations is not null) healthProfile.Vaccinations = request.Vaccinations;
+
+        healthProfile.UpdatedAt = DateTime.UtcNow;
+
+        if (isNew)
+            await _healthProfileRepository.CreateAsync(healthProfile);
+        else
+            await _healthProfileRepository.UpdateAsync(healthProfile);
+
+        return healthProfile.MapHealthProfileToDto()!;
+    }
+
     private static int CalculateCurrentWeek(DateOnly estimatedDueDate)
     {
         var today = DateOnly.FromDateTime(DateTime.UtcNow);

@@ -8,4 +8,5 @@ public interface IUserService
     Task<UserDto> UpdateUserProfileAsync(Guid userId, UpdateUserProfileRequest request);
     Task<UserDto> UpdateLifeStageAsync(Guid userId, UpdateLifeStageRequest request);
     Task<HealthProfileDto?> GetHealthProfileAsync(Guid userId);
+    Task<HealthProfileDto> UpdateHealthProfileAsync(Guid userId, UpdateHealthProfileRequest request);
 }

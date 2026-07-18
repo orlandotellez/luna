@@ -39,3 +39,20 @@ public record UpdateLifeStageRequest(
     DateOnly? LastMenstrualPeriod,
     DateOnly? EstimatedDueDate
 );
+
+public record UpdateHealthProfileRequest(
+    bool? HasRegularCycle,
+    int? CycleLengthDays,
+    int? PeriodLengthDays,
+    bool? HasEndometriosis,
+    bool? HasPcos,
+    bool? HasThyroidIssues,
+    bool? HasGestationalDiabetes,
+    bool? HasFibroids,
+    bool? HasHypertension,
+    string? Allergies,
+    List<String>? Medications,
+    int? PreviousPregnancies,
+    string? Surgeries,
+    List<string>? Vaccinations
+);
