@@ -1,10 +1,29 @@
 using Luna.Application.Common.Models.Cycle;
 using Luna.Domain.Entities.Cycle;
+using Luna.Application.Common.Models.User;
 
 namespace Luna.Application.Common.Mapping;
 
 public static class MappingCycle
 {
+    public static PregnancyDto? MapPregnancyToDto(this Pregnancy? pregnancy)
+    {
+        if (pregnancy is null) return null;
+
+        return new PregnancyDto
+        {
+            Id = pregnancy.Id,
+            LastMenstrualPeriod = pregnancy.LastMenstrualPeriod,
+            EstimatedDueDate = pregnancy.EstimatedDueDate,
+            CurrentWeek = pregnancy.CurrentWeek,
+            IsFirstPregnancy = pregnancy.IsFirstPregnancy,
+            PregnancyCount = pregnancy.PregnancyCount,
+            IsActive = pregnancy.IsActive,
+            EndedAt = pregnancy.EndedAt,
+            Notes = pregnancy.Notes
+        };
+    }
+
     public static PeriodEntryDto MapPeriodEntryToDto(this PeriodEntry period)
     {
         return new PeriodEntryDto

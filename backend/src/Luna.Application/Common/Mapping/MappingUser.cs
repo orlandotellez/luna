@@ -1,6 +1,5 @@
 using Luna.Application.Common.Models.User;
 using Luna.Domain.Entities.Users;
-using Luna.Domain.Entities.Cycle;
 using Luna.Domain.Exceptions;
 
 namespace Luna.Application.Common.Mapping;
@@ -47,23 +46,6 @@ public static class MappingUser
         };
     }
 
-    public static PregnancyDto? MapPregnancyToDto(this Pregnancy? pregnancy)
-    {
-        if (pregnancy is null) return null;
-
-        return new PregnancyDto
-        {
-            Id = pregnancy.Id,
-            LastMenstrualPeriod = pregnancy.LastMenstrualPeriod,
-            EstimatedDueDate = pregnancy.EstimatedDueDate,
-            CurrentWeek = pregnancy.CurrentWeek,
-            IsFirstPregnancy = pregnancy.IsFirstPregnancy,
-            PregnancyCount = pregnancy.PregnancyCount,
-            IsActive = pregnancy.IsActive,
-            EndedAt = pregnancy.EndedAt,
-            Notes = pregnancy.Notes
-        };
-    }
 
     public static HealthProfileDto? MapHealthProfileToDto(this HealthProfile? profile)
     {
