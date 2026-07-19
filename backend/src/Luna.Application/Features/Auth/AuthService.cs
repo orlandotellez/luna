@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Luna.Application.Common.Interfaces.Services;
-using Luna.Application.Common.Interfaces.Repositories;
+using Luna.Application.Common.Interfaces.Repositories.Auth;
+using Luna.Application.Common.Interfaces.Repositories.Users;
 using Luna.Application.Common.Models.Auth;
 using Luna.Application.Common.Mapping;
 using Luna.Domain.Exceptions;

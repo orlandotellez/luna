@@ -1,5 +1,6 @@
 using Luna.Application.Common.Interfaces.Services;
-using Luna.Application.Common.Interfaces.Repositories;
+using Luna.Application.Common.Interfaces.Repositories.Cycle;
+using Luna.Application.Common.Interfaces.Repositories.Users;
 using Luna.Application.Common.Models.User;
 using Luna.Application.Common.Models.Cycle;
 using Luna.Application.Common.Mapping;
