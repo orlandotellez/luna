@@ -1,6 +1,7 @@
 using Luna.Domain.Enums;
+using Luna.Domain.Entities.Cycle;
 
-namespace Luna.Domain.Entities;
+namespace Luna.Domain.Entities.Users;
 
 public class User
 {

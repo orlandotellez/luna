@@ -1,4 +1,4 @@
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Auth;
 
 namespace Luna.Application.Common.Interfaces.Repositories;
 

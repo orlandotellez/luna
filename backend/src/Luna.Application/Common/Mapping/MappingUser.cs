@@ -1,5 +1,6 @@
 using Luna.Application.Common.Models.User;
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Users;
+using Luna.Domain.Entities.Cycle;
 using Luna.Domain.Exceptions;
 
 namespace Luna.Application.Common.Mapping;

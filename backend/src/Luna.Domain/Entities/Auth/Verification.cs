@@ -1,4 +1,4 @@
-namespace Luna.Domain.Entities;
+namespace Luna.Domain.Entities.Auth;
 
 public class Verification
 {

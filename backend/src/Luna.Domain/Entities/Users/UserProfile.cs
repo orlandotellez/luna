@@ -1,4 +1,4 @@
-namespace Luna.Domain.Entities;
+namespace Luna.Domain.Entities.Users;
 
 public class UserProfile
 {
