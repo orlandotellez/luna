@@ -6,7 +6,8 @@ using Luna.Application.Common.Mapping;
 using Luna.Application.Common.Helpers;
 using Luna.Domain.Exceptions;
 using Luna.Domain.Enums;
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Cycle;
+using Luna.Domain.Entities.Users;
 
 namespace Luna.Application.Features.Users;
 

@@ -1,5 +1,5 @@
 using Luna.Application.Common.Models.Cycle;
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Cycle;
 
 namespace Luna.Application.Common.Mapping;
 

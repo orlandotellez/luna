@@ -1,4 +1,6 @@
-namespace Luna.Domain.Entities;
+using Luna.Domain.Entities.Users;
+
+namespace Luna.Domain.Entities.Auth;
 
 public class Session
 {

@@ -1,4 +1,6 @@
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Auth;
+using Luna.Domain.Entities.Users;
+using Luna.Domain.Entities.Cycle;
 using Luna.Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 

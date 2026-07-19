@@ -4,7 +4,8 @@ using Luna.Application.Common.Interfaces.Repositories;
 using Luna.Application.Common.Models.Auth;
 using Luna.Application.Common.Mapping;
 using Luna.Domain.Exceptions;
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Auth;
+using Luna.Domain.Entities.Users;
 using Luna.Domain.Enums;
 
 namespace Luna.Application.Features.Auth;

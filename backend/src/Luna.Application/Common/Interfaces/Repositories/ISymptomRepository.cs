@@ -1,4 +1,4 @@
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Cycle;
 
 namespace Luna.Application.Common.Interfaces.Repositories;
 

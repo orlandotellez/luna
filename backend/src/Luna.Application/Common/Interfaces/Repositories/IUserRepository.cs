@@ -1,5 +1,5 @@
 using Luna.Application.Common.Models.User;
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Users;
 
 namespace Luna.Application.Common.Interfaces.Repositories;
 

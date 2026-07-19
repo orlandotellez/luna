@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Cycle;
 
 namespace Luna.Infrastructure.Persistence.Configurations;
 

@@ -1,5 +1,5 @@
 using Luna.Application.Common.Interfaces.Repositories;
-using Luna.Domain.Entities;
+using Luna.Domain.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace Luna.Infrastructure.Persistence.Repositories;
