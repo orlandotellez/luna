@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Luna.Domain.Entities.Users;
 
-namespace Luna.Infrastructure.Persistence.Configurations;
+namespace Luna.Infrastructure.Persistence.Configurations.Users;
 
 public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
 {

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Luna.Application.Common.Interfaces.Repositories;
+using Luna.Application.Common.Interfaces.Repositories.Users;
 using Luna.Domain.Entities.Users;
 
-namespace Luna.Infrastructure.Persistence.Repositories;
+namespace Luna.Infrastructure.Persistence.Repositories.Users;
 
 public class HealthProfileRepository : IHealthProfileRepository
 {

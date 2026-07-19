@@ -1,9 +1,13 @@
 using Luna.Api.Helpers;
 using Luna.Application.Features.Auth;
 using Luna.Application.Features.Users;
-using Luna.Application.Common.Interfaces.Repositories;
+using Luna.Application.Common.Interfaces.Repositories.Auth;
+using Luna.Application.Common.Interfaces.Repositories.Users;
+using Luna.Application.Common.Interfaces.Repositories.Cycle;
 using Luna.Application.Common.Interfaces.Services;
-using Luna.Infrastructure.Persistence.Repositories;
+using Luna.Infrastructure.Persistence.Repositories.Users;
+using Luna.Infrastructure.Persistence.Repositories.Auth;
+using Luna.Infrastructure.Persistence.Repositories.Cycle;
 using Luna.Infrastructure.Services;
 using Luna.Infrastructure.Adapters.Cloud;
 

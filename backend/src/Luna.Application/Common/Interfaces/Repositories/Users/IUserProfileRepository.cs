@@ -1,6 +1,6 @@
 using Luna.Domain.Entities.Users;
 
-namespace Luna.Application.Common.Interfaces.Repositories;
+namespace Luna.Application.Common.Interfaces.Repositories.Users;
 
 public interface IUserProfileRepository
 {

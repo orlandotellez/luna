@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Luna.Application.Common.Interfaces.Repositories;
+using Luna.Application.Common.Interfaces.Repositories.Cycle;
 using Luna.Domain.Entities.Cycle;
 
-namespace Luna.Infrastructure.Persistence.Repositories;
+namespace Luna.Infrastructure.Persistence.Repositories.Cycle;
 
 public class PeriodEntryRepository : IPeriodEntryRepository
 {
