@@ -16,18 +16,24 @@ public class UserService : IUserService
     private readonly IUserProfileRepository _userProfileRepository;
     private readonly IPregnancyRepository _pregnancyRepository;
     private readonly IHealthProfileRepository _healthProfileRepository;
+    private readonly IPeriodEntryRepository _periodEntryRepository;
+    private readonly ISymptomEntryRepository _symptomEntryRepository;
 
     public UserService(
         IUserRepository userRepository,
         IUserProfileRepository userProfileRepository,
         IPregnancyRepository pregnancyRepository,
-        IHealthProfileRepository healthProfileRepository
+        IHealthProfileRepository healthProfileRepository,
+        IPeriodEntryRepository periodEntryRepository,
+ISymptomEntryRepository symptomEntryRepository
         )
     {
         _userRepository = userRepository;
         _userProfileRepository = userProfileRepository;
         _pregnancyRepository = pregnancyRepository;
         _healthProfileRepository = healthProfileRepository;
+        _periodEntryRepository = periodEntryRepository;
+        _symptomEntryRepository = symptomEntryRepository;
     }
 
     public async Task<UserDto> GetMyProfileAsync(Guid userId)
@@ -244,6 +250,57 @@ public class UserService : IUserService
         }
 
         return result;
+    }
+
+    public async Task<PeriodEntryDto> RegisterPeriodAsync(Guid userId, RegisterPeriodRequest request)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        // Validar que EndDate no sea anterior a StartDate
+        if (request.EndDate.HasValue && request.EndDate.Value < request.StartDate)
+            throw AppExceptions.BadRequest("EndDate cannot be before StartDate");
+
+        var period = new PeriodEntry
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            StartDate = request.StartDate,
+            EndDate = request.EndDate,
+            Notes = request.Notes,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        await _periodEntryRepository.CreateAsync(period);
+
+        return period.MapPeriodEntryToDto();
+    }
+
+    public async Task<SymptomEntryDto> RegisterSymptomAsync(Guid userId, RegisterSymptomRequest request)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        // Validate severity
+        if (request.Severity.HasValue && (request.Severity.Value < 1 || request.Severity.Value > 10))
+            throw AppExceptions.BadRequest("Severity must be between 1 and 10");
+
+        var symptom = new SymptomEntry
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Date = request.Date,
+            Symptom = request.Symptom,
+            Severity = request.Severity,
+            Notes = request.Notes,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        await _symptomEntryRepository.CreateAsync(symptom);
+
+        return symptom.MapSymptomEntryToDto();
     }
 }
 
