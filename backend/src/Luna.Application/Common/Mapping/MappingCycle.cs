@@ -16,4 +16,17 @@ public static class MappingCycle
             CreatedAt = period.CreatedAt
         };
     }
+
+    public static SymptomEntryDto MapSymptomEntryToDto(this SymptomEntry symptom)
+    {
+        return new SymptomEntryDto
+        {
+            Id = symptom.Id,
+            Date = symptom.Date,
+            Symptom = symptom.Symptom,
+            Severity = symptom.Severity,
+            Notes = symptom.Notes,
+            CreatedAt = symptom.CreatedAt
+        };
+    }
 }

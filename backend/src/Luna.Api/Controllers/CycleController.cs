@@ -44,4 +44,17 @@ public class CycleController : ControllerBase
 
         return Created($"/api/v1/cycle/period/{result.Id}", result);
     }
+
+    [HttpPost("symptoms")]
+    public async Task<ActionResult<SymptomEntryDto>> RegisterSymptom([FromBody] RegisterSymptomRequest request)
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var result = await _userService.RegisterSymptomAsync(userId.Value, request);
+
+        return Created($"/api/v1/cycle/symptoms/{result.Id}", result);
+    }
 }

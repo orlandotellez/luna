@@ -62,3 +62,10 @@ public record RegisterPeriodRequest(
     DateOnly? EndDate,
     string? Notes
 );
+
+public record RegisterSymptomRequest(
+    DateOnly Date,
+    string Symptom,
+    int? Severity,
+    string? Notes
+);

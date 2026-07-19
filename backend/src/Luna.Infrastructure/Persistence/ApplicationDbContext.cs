@@ -16,11 +16,13 @@ public class ApplicationDbContext : DbContext
     public DbSet<Session> Sessions => Set<Session>();
     public DbSet<Verification> Verifications => Set<Verification>();
     public DbSet<PeriodEntry> PeriodEntries => Set<PeriodEntry>();
+    public DbSet<SymptomEntry> SymptomEntries => Set<SymptomEntry>();
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new PeriodEntryConfiguration());
+        modelBuilder.ApplyConfiguration(new SymptomEntryConfiguration());
     }
 }
