@@ -13,10 +13,15 @@ namespace Luna.Api.Controllers;
 public class CycleController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly ICycleService _cycleService;
 
-    public CycleController(IUserService userService)
+    public CycleController(
+        IUserService userService,
+        ICycleService cycleService
+        )
     {
         _userService = userService;
+        _cycleService = cycleService;
     }
 
     [HttpGet("current")]
@@ -27,7 +32,7 @@ public class CycleController : ControllerBase
         if (userId is null)
             return Unauthorized(new { error = "Invalid token" });
 
-        var result = await _userService.GetCurrentCycleAsync(userId.Value);
+        var result = await _cycleService.GetCurrentCycleAsync(userId.Value);
 
         return Ok(result);
     }
@@ -40,7 +45,7 @@ public class CycleController : ControllerBase
         if (userId is null)
             return Unauthorized(new { error = "Invalid token" });
 
-        var result = await _userService.RegisterPeriodAsync(userId.Value, request);
+        var result = await _cycleService.RegisterPeriodAsync(userId.Value, request);
 
         return Created($"/api/v1/cycle/period/{result.Id}", result);
     }
