@@ -86,4 +86,5 @@ public static class MappingUser
             Vaccinations = profile.Vaccinations
         };
     }
+
 }

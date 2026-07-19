@@ -16,18 +16,21 @@ public class UserService : IUserService
     private readonly IUserProfileRepository _userProfileRepository;
     private readonly IPregnancyRepository _pregnancyRepository;
     private readonly IHealthProfileRepository _healthProfileRepository;
+    private readonly IPeriodEntryRepository _periodEntryRepository;
 
     public UserService(
         IUserRepository userRepository,
         IUserProfileRepository userProfileRepository,
         IPregnancyRepository pregnancyRepository,
-        IHealthProfileRepository healthProfileRepository
+        IHealthProfileRepository healthProfileRepository,
+        IPeriodEntryRepository periodEntryRepository
         )
     {
         _userRepository = userRepository;
         _userProfileRepository = userProfileRepository;
         _pregnancyRepository = pregnancyRepository;
         _healthProfileRepository = healthProfileRepository;
+        _periodEntryRepository = periodEntryRepository;
     }
 
     public async Task<UserDto> GetMyProfileAsync(Guid userId)
@@ -244,6 +247,31 @@ public class UserService : IUserService
         }
 
         return result;
+    }
+
+    public async Task<PeriodEntryDto> RegisterPeriodAsync(Guid userId, RegisterPeriodRequest request)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        // Validar que EndDate no sea anterior a StartDate
+        if (request.EndDate.HasValue && request.EndDate.Value < request.StartDate)
+            throw AppExceptions.BadRequest("EndDate cannot be before StartDate");
+
+        var period = new PeriodEntry
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            StartDate = request.StartDate,
+            EndDate = request.EndDate,
+            Notes = request.Notes,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        await _periodEntryRepository.CreateAsync(period);
+
+        return period.MapPeriodEntryToDto();
     }
 }
 

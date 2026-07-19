@@ -1,6 +1,7 @@
 using Luna.Api.Helpers;
 using Luna.Application.Common.Interfaces.Services;
 using Luna.Application.Common.Models.Cycle;
+using Luna.Application.Common.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,5 +30,18 @@ public class CycleController : ControllerBase
         var result = await _userService.GetCurrentCycleAsync(userId.Value);
 
         return Ok(result);
+    }
+
+    [HttpPost("period")]
+    public async Task<ActionResult<PeriodEntryDto>> RegisterPeriod([FromBody] RegisterPeriodRequest request)
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var result = await _userService.RegisterPeriodAsync(userId.Value, request);
+
+        return Created($"/api/v1/cycle/period/{result.Id}", result);
     }
 }

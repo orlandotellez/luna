@@ -56,3 +56,9 @@ public record UpdateHealthProfileRequest(
     string? Surgeries,
     List<string>? Vaccinations
 );
+
+public record RegisterPeriodRequest(
+    DateOnly StartDate,
+    DateOnly? EndDate,
+    string? Notes
+);

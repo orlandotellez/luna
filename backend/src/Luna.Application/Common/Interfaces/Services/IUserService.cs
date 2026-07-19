@@ -12,4 +12,5 @@ public interface IUserService
     Task<HealthProfileDto> UpdateHealthProfileAsync(Guid userId, UpdateHealthProfileRequest request);
     Task<UserDto> UpdateAvatarAsync(Guid userId, string imageUrl);
     Task<CycleCurrentDto> GetCurrentCycleAsync(Guid userId);
+    Task<PeriodEntryDto> RegisterPeriodAsync(Guid userId, RegisterPeriodRequest request);
 }

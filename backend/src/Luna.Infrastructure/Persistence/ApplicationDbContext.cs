@@ -1,4 +1,5 @@
 using Luna.Domain.Entities;
+using Luna.Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Luna.Infrastructure.Persistence;
@@ -14,4 +15,12 @@ public class ApplicationDbContext : DbContext
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<Session> Sessions => Set<Session>();
     public DbSet<Verification> Verifications => Set<Verification>();
+    public DbSet<PeriodEntry> PeriodEntries => Set<PeriodEntry>();
+
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfiguration(new PeriodEntryConfiguration());
+    }
 }
