@@ -3,7 +3,7 @@ using Luna.Application.Common.Models.User;
 using Luna.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
-namespace Luna.Infrastructure.Persistence.Repositories;
+namespace Luna.Infrastructure.Persistence.Repositories.Users;
 
 public class UserRepository : IUserRepository
 {

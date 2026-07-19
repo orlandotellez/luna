@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Luna.Domain.Entities.Users;
 using Luna.Domain.Enums;
 
-namespace Luna.Infrastructure.Persistence.Configurations;
+namespace Luna.Infrastructure.Persistence.Configurations.Users;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

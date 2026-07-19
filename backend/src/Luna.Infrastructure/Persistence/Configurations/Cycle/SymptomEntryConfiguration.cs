@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Luna.Domain.Entities.Cycle;
 
-namespace Luna.Infrastructure.Persistence.Configurations;
+namespace Luna.Infrastructure.Persistence.Configurations.Cycle;
 
 public class SymptomEntryConfiguration : IEntityTypeConfiguration<SymptomEntry>
 {

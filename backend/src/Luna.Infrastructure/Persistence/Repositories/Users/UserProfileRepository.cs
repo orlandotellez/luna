@@ -2,7 +2,7 @@ using Luna.Application.Common.Interfaces.Repositories.Users;
 using Luna.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
-namespace Luna.Infrastructure.Persistence.Repositories;
+namespace Luna.Infrastructure.Persistence.Repositories.Users;
 
 public class UserProfileRepository : IUserProfileRepository
 {

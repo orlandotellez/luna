@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Luna.Domain.Entities.Auth;
 
-namespace Luna.Infrastructure.Persistence.Configurations;
+namespace Luna.Infrastructure.Persistence.Configurations.Auth;
 
 public class AccountConfiguration : IEntityTypeConfiguration<Account>
 {

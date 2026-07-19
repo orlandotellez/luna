@@ -2,7 +2,7 @@ using Luna.Application.Common.Interfaces.Repositories.Auth;
 using Luna.Domain.Entities.Auth;
 using Microsoft.EntityFrameworkCore;
 
-namespace Luna.Infrastructure.Persistence.Repositories;
+namespace Luna.Infrastructure.Persistence.Repositories.Auth;
 
 public class VerificationRepository : IVerificationRepository
 {
