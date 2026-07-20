@@ -1,11 +1,11 @@
+import { ScreenWrapper } from '@/src/shared/components/layout/ScreenWrapper';
 import { Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
   return <>
-    <SafeAreaView>
+    <ScreenWrapper noPadding>
       <Text>Home</Text>
-    </SafeAreaView>
+    </ScreenWrapper>
   </>
 }
 
