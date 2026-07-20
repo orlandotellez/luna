@@ -48,4 +48,14 @@ public class PeriodEntryRepository : IPeriodEntryRepository
         await _context.SaveChangesAsync();
         return period;
     }
+
+    public async Task<List<PeriodEntry>> GetOverlappingWithRangeAsync(Guid userId, DateOnly rangeStart, DateOnly rangeEnd)
+    {
+        return await _context.PeriodEntries
+            .Where(p => p.UserId == userId
+                && p.StartDate <= rangeEnd
+                && (p.EndDate == null || p.EndDate >= rangeStart))
+            .OrderByDescending(p => p.StartDate)
+            .ToListAsync();
+    }
 }

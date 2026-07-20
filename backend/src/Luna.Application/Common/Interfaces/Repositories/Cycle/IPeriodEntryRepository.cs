@@ -9,4 +9,5 @@ public interface IPeriodEntryRepository
     Task<PeriodEntry?> GetLastByUserIdAsync(Guid userId);
     Task<PeriodEntry> CreateAsync(PeriodEntry period);
     Task<PeriodEntry> UpdateAsync(PeriodEntry period);
+    Task<List<PeriodEntry>> GetOverlappingWithRangeAsync(Guid userId, DateOnly rangeStart, DateOnly rangeEnd);
 }
