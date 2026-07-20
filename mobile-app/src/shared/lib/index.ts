@@ -1,7 +1,9 @@
 import { colors } from "./colors";
+import { spacing } from "./spacing";
 
-export { colors }
+export { colors, spacing }
 
 export const THEME = {
-  colors
+  colors,
+  spacing
 } as const

@@ -1,47 +1,45 @@
 export const colors = {
-  // Brand
-  primary: '#C8665C',
-  primaryDark: '#A84C42',
-  primaryLight: '#E07A70',
-  secondary: '#FDF8F5',
+  background: '#fff5f5',
+  surface: '#fffafa',
+  card: '#ffffff',
+  elevated: '#f8f0f5',
+  accentLight: '#f3e8f0',
 
-  // Stage Colors
-  menstruacion: '#E8846A',
-  embarazo: '#E8A87C',
-  menopausia: '#A88DB8',
+  foreground: '#2d1b2e',
+  textSecondary: '#6b5068',
+  textMuted: '#9b7f98',
+  textAccent: '#d4a5b6',
 
-  // Supporting
-  salvia: '#8DB89A',
-  salviaDark: '#5DAE7B',
-  lavanda: '#C4A8D4',
-  durazno: '#F4D4B8',
+  primary: '#d4a5b6',
+  primaryDark: '#b88298',
+  primaryLight: '#e8c8d4',
+  primaryForeground: '#ffffff',
 
-  // Neutrals
-  bg: '#FDF8F5',
-  bgAlt: '#FFF9F5',
-  surface: '#FFFFFF',
-  border: '#F5EDE8',
-  textSecondary: '#8C7E76',
-  textPrimary: '#3D322C',
-  textDark: '#2B221D',
-  placeholder: '#C4A8D4',
+  secondary: '#b8a9c9',
+  secondaryDark: '#9a8bb0',
+  secondaryLight: '#d8cfe8',
 
-  // Semantic
-  success: '#5DAE7B',
-  error: '#D45656',
-  warning: '#E4A454',
+  accent: '#f3e8f0',
+  accentCoral: '#e8a598',
+  accentTeal: '#88bdb0',
+  accentGold: '#e8c87a',
 
-  // Stage backgrounds
-  stageMenstruacionBg: '#FEF3EF',
-  stageEmbarazoBg: '#FEF7F0',
-  stageMenopausiaBg: '#F5F0F8',
-  stageFamiliaBg: '#E8F0E8',
+  muted: '#f8f0f5',
+  mutedForeground: '#6b5068',
+  cardForeground: '#2d1b2e',
 
-  // Misc
-  chartBarDefault: '#E8D5D0',
-  chartBarLight: '#E0BCB0',
-  phoneBackground: '#F0EBE6',
-  avatarBackground: '#E8D5C0',
+  success: '#5cb87a',
+  successBg: '#e8f5e9',
+  warning: '#e8a020',
+  warningBg: '#fff3e0',
+  danger: '#d4606a',
+  dangerBg: '#ffebee',
+  info: '#7ab8d4',
+  infoBg: '#e3f2fd',
+
+  border: '#e8dde6',
+  borderStrong: '#d4c5d0',
+  white: '#ffffff',
 } as const;
 
 export type ColorKey = keyof typeof colors;
