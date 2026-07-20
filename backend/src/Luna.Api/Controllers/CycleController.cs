@@ -62,4 +62,19 @@ public class CycleController : ControllerBase
 
         return Created($"/api/v1/cycle/symptoms/{result.Id}", result);
     }
+
+    [HttpGet("calendar")]
+    public async Task<ActionResult<CycleCalendarDto>> GetCalendar(
+    [FromQuery] int month,
+    [FromQuery] int year)
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var result = await _cycleService.GetCalendarAsync(userId.Value, month, year);
+
+        return Ok(result);
+    }
 }

@@ -17,12 +17,14 @@ public class CycleService : ICycleService
     private readonly IPeriodEntryRepository _periodEntryRepository;
     private readonly IHealthProfileRepository _healthProfileRepository;
     private readonly IPregnancyRepository _pregnancyRepository;
+    private readonly ISymptomEntryRepository _symptomEntryRepository;
 
     public CycleService(
         IUserRepository userRepository,
         IPeriodEntryRepository periodEntryRepository,
         IHealthProfileRepository healthProfileRepository,
-        IPregnancyRepository pregnancyRepository
+        IPregnancyRepository pregnancyRepository,
+        ISymptomEntryRepository symptomEntryRepository
 
         )
     {
@@ -30,6 +32,7 @@ public class CycleService : ICycleService
         _periodEntryRepository = periodEntryRepository;
         _healthProfileRepository = healthProfileRepository;
         _pregnancyRepository = pregnancyRepository;
+        _symptomEntryRepository = symptomEntryRepository;
     }
 
     public async Task<CycleCurrentDto> GetCurrentCycleAsync(Guid userId)
@@ -89,6 +92,104 @@ public class CycleService : ICycleService
         await _periodEntryRepository.CreateAsync(period);
 
         return period.MapPeriodEntryToDto();
+    }
+
+    public async Task<CycleCalendarDto> GetCalendarAsync(Guid userId, int month, int year)
+    {
+        if (month < 1 || month > 12)
+            throw AppExceptions.BadRequest("Month must be between 1 and 12.");
+        if (year < 1900 || year > 2100)
+            throw AppExceptions.BadRequest("Year must be between 1900 and 2100.");
+
+        var startDate = new DateOnly(year, month, 1);
+        var endDate = startDate.AddMonths(1).AddDays(-1);
+
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        var lifeStage = user.LifeStage ?? LifeStage.ActiveCycle;
+        var activePregnancy = await _pregnancyRepository.GetActiveByUserIdAsync(userId);
+        if (activePregnancy is not null)
+            lifeStage = LifeStage.Pregnancy;
+
+        var healthProfile = await _healthProfileRepository.GetByUserIdAsync(userId);
+        var hasPredictionConfig = healthProfile?.HasRegularCycle == true
+                                  && healthProfile.CycleLengthDays.HasValue;
+        var cycleLength = healthProfile?.CycleLengthDays ?? 28;
+        var periodLength = healthProfile?.PeriodLengthDays ?? 5;
+
+        var periodsInRange = await _periodEntryRepository
+            .GetOverlappingWithRangeAsync(userId, startDate, endDate);
+        var symptomsInRange = await _symptomEntryRepository
+            .GetByUserIdInRangeAsync(userId, startDate, endDate);
+
+        var defaultAnchor = periodsInRange
+            .Where(p => p.StartDate <= endDate)
+            .OrderByDescending(p => p.StartDate)
+            .FirstOrDefault();
+
+        var days = new List<CycleCalendarDayDto>();
+        for (var d = startDate; d <= endDate; d = d.AddDays(1))
+        {
+            var dayEntry = new CycleCalendarDayDto { Date = d };
+
+            dayEntry.IsPeriodDay = periodsInRange.Any(p =>
+                p.StartDate <= d && (p.EndDate == null || p.EndDate >= d));
+
+            dayEntry.Symptoms = symptomsInRange
+                .Where(s => s.Date == d)
+                .Select(s => s.MapSymptomEntryToDto())
+                .ToList();
+
+            if (defaultAnchor != null)
+            {
+                var specificAnchor = periodsInRange
+                    .Where(p => p.StartDate <= d)
+                    .OrderByDescending(p => p.StartDate)
+                    .FirstOrDefault() ?? defaultAnchor;
+
+                var dayOfCycle = d.DayNumber - specificAnchor.StartDate.DayNumber + 1;
+
+                if (dayOfCycle >= 1 && dayOfCycle <= cycleLength)
+                {
+                    dayEntry.DayOfCycle = dayOfCycle;
+                    dayEntry.Phase = dayOfCycle switch
+                    {
+                        var n when n <= periodLength => CyclePhase.Menstrual,
+                        var n when n <= cycleLength - 16 => CyclePhase.Follicular,
+                        var n when n <= cycleLength - 13 => CyclePhase.Ovulatory,
+                        _ => CyclePhase.Luteal
+                    };
+
+                    if (hasPredictionConfig)
+                    {
+                        var ovulationDay = cycleLength - 14;
+                        var fertileStartDay = ovulationDay - 5;
+                        var fertileEndDay = ovulationDay + 1;
+
+                        dayEntry.IsOvulationDay = dayOfCycle == ovulationDay;
+                        dayEntry.IsFertileWindow = dayOfCycle >= fertileStartDay
+                                                    && dayOfCycle <= fertileEndDay;
+
+                        if (!dayEntry.IsPeriodDay && dayOfCycle <= periodLength)
+                            dayEntry.IsPredictedPeriod = true;
+                    }
+                }
+            }
+
+            days.Add(dayEntry);
+        }
+
+        return new CycleCalendarDto
+        {
+            UserId = userId,
+            Month = month,
+            Year = year,
+            StartDate = startDate,
+            EndDate = endDate,
+            LifeStage = lifeStage,
+            Days = days
+        };
     }
 
 }
