@@ -1,5 +1,5 @@
 using Luna.Domain.Enums;
-using Luna.Domain.Entities.Cycle;
+using Luna.Domain.Entities.Pregnancies;
 
 namespace Luna.Domain.Entities.Users;
 

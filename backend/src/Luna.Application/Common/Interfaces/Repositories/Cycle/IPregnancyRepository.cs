@@ -1,4 +1,4 @@
-using Luna.Domain.Entities.Cycle;
+using Luna.Domain.Entities.Pregnancies;
 
 namespace Luna.Application.Common.Interfaces.Repositories.Cycle;
 
