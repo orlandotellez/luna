@@ -1,6 +1,7 @@
 using Luna.Api.Helpers;
 using Luna.Application.Features.Auth;
 using Luna.Application.Features.Users;
+using Luna.Application.Features.Cycle;
 using Luna.Application.Common.Interfaces.Repositories.Auth;
 using Luna.Application.Common.Interfaces.Repositories.Users;
 using Luna.Application.Common.Interfaces.Repositories.Cycle;
@@ -30,6 +31,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IHealthProfileRepository, HealthProfileRepository>();
         services.AddScoped<IPeriodEntryRepository, PeriodEntryRepository>();
         services.AddScoped<ISymptomEntryRepository, SymptomEntryRepository>();
+        services.AddScoped<ICycleService, CycleService>();
 
         // Services Infrastructure
         services.AddScoped<ITokenService, TokenService>();
