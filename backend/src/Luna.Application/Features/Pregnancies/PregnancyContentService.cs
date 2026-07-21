@@ -26,6 +26,23 @@ public class PregnancyContentService : IPregnancyContentService
         return Task.FromResult(_weeks.Values.OrderBy(w => w.WeekNumber).ToList());
     }
 
+    public Task<PregnancyWeeksResponseDto> GetWeeksProgressAsync(int? currentWeek)
+    {
+        var progressList = _weeks.Values
+            .OrderBy(w => w.WeekNumber)
+            .Select(w => new PregnancyWeekProgressDto
+            {
+                WeekNumber = w.WeekNumber,
+                Trimester = w.Trimester,
+                Title = w.Title,
+                IsCompleted = currentWeek.HasValue && w.WeekNumber < currentWeek.Value,
+                IsCurrent = currentWeek.HasValue && w.WeekNumber == currentWeek.Value
+            })
+            .ToList();
+
+        return Task.FromResult(new PregnancyWeeksResponseDto { Weeks = progressList });
+    }
+
     private static IEnumerable<PregnancyWeekContentDto> SeedWeeks()
     {
         return new List<PregnancyWeekContentDto>

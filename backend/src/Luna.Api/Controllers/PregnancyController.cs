@@ -63,4 +63,17 @@ public class PregnancyController : ControllerBase
 
         return Ok(content);
     }
+
+    [HttpGet("weeks")]
+    public async Task<ActionResult<PregnancyWeeksResponseDto>> GetWeeks()
+    {
+        var userId = HttpContext.GetCurrentUserId();
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var currentWeek = await _pregnancyService.GetActivePregnancyCurrentWeekAsync(userId.Value);
+        var progress = await _contentService.GetWeeksProgressAsync(currentWeek);
+
+        return Ok(progress);
+    }
 }
