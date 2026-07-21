@@ -16,7 +16,7 @@ public class PregnancyConfiguration : IEntityTypeConfiguration<Pregnancy>
         builder.HasIndex(p => p.UserId);                       // (1:N)
 
         builder.HasOne(p => p.User)
-            .WithMany()
+            .WithMany(u => u.Pregnancies)
             .HasForeignKey(p => p.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
