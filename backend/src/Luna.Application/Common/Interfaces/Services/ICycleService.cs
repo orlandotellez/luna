@@ -9,5 +9,6 @@ public interface ICycleService
     Task<PeriodEntryDto> RegisterPeriodAsync(Guid userId, RegisterPeriodRequest request);
     Task<CycleCalendarDto> GetCalendarAsync(Guid userId, int month, int year);
     Task<CycleHistoryDto> GetHistoryAsync(Guid userId, int limit = 12);
-
+    Task<CycleStatsDto> GetStatsAsync(Guid userId);
+    Task<CycleForecastResponseDto> GetPredictionsAsync(Guid userId);
 }
