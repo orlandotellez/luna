@@ -31,4 +31,17 @@ public class PregnancyController : ControllerBase
 
         return Created("/api/v1/pregnancy/current", result);
     }
+
+    [HttpGet("current")]
+    public async Task<ActionResult<CurrentPregnancyResponseDto>> GetCurrent()
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var result = await _pregnancyService.GetCurrentPregnancyAsync(userId.Value);
+
+        return Ok(result);
+    }
 }

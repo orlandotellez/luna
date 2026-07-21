@@ -84,4 +84,35 @@ public class PregnancyService : IPregnancyService
             WeeksRemaining = weeksRemaining
         };
     }
+
+    public async Task<CurrentPregnancyResponseDto> GetCurrentPregnancyAsync(Guid userId)
+    {
+        var pregnancy = await _pregnancyRepository.GetActiveByUserIdAsync(userId);
+        if (pregnancy is null)
+            throw AppExceptions.NotFound("No active pregnancy found for this user.");
+
+        var currentWeek = PregnancyHelper.CalculateCurrentWeek(pregnancy.EstimatedDueDate);
+
+        var trimester = currentWeek switch
+        {
+            <= 13 => 1,
+            <= 27 => 2,
+            _ => 3
+        };
+
+        var weeksRemaining = Math.Max(0, 40 - currentWeek);
+
+        return new CurrentPregnancyResponseDto
+        {
+            PregnancyId = pregnancy.Id,
+            LastMenstrualPeriod = pregnancy.LastMenstrualPeriod,
+            EstimatedDueDate = pregnancy.EstimatedDueDate,
+            CurrentWeek = currentWeek,
+            Trimester = trimester,
+            WeeksRemaining = weeksRemaining,
+            IsFirstPregnancy = pregnancy.IsFirstPregnancy,
+            IsActive = pregnancy.IsActive,
+            Notes = pregnancy.Notes
+        };
+    }
 }
