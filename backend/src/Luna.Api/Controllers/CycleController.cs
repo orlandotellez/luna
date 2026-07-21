@@ -77,4 +77,18 @@ public class CycleController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("history")]
+    public async Task<ActionResult<CycleHistoryDto>> GetHistory(
+           [FromQuery] int limit = 12)
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var result = await _cycleService.GetHistoryAsync(userId.Value, limit);
+
+        return Ok(result);
+    }
 }

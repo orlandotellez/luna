@@ -192,7 +192,65 @@ public class CycleService : ICycleService
         };
     }
 
+    public async Task<CycleHistoryDto> GetHistoryAsync(Guid userId, int limit = 12)
+    {
+        if (limit <= 0 || limit > 100)
+            throw AppExceptions.BadRequest("Limit must be between 1 and 100.");
+
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        var lifeStage = user.LifeStage ?? LifeStage.ActiveCycle;
+        var activePregnancy = await _pregnancyRepository.GetActiveByUserIdAsync(userId);
+        if (activePregnancy is not null)
+            lifeStage = LifeStage.Pregnancy;
+
+        var allPeriods = await _periodEntryRepository.GetByUserIdAsync(userId);
+
+        var ascending = allPeriods.OrderBy(p => p.StartDate).ToList();
+
+        var items = new List<CycleHistoryItemDto>();
+        for (var i = 0; i < ascending.Count; i++)
+        {
+            var current = ascending[i];
+
+            int? cycleLengthDays = null;
+            if (i > 0)
+            {
+                var previous = ascending[i - 1];
+                cycleLengthDays = current.StartDate.DayNumber - previous.StartDate.DayNumber;
+            }
+
+            int? periodLengthDays = null;
+            if (current.EndDate.HasValue)
+                periodLengthDays = current.EndDate.Value.DayNumber - current.StartDate.DayNumber + 1;
+
+            items.Add(new CycleHistoryItemDto
+            {
+                Id = current.Id,
+                CycleNumber = i + 1,
+                StartDate = current.StartDate,
+                EndDate = current.EndDate,
+                PeriodLengthDays = periodLengthDays,
+                CycleLengthDays = cycleLengthDays,
+                Notes = current.Notes,
+                CreatedAt = current.CreatedAt
+            });
+        }
+
+        var orderedDescending = items.OrderByDescending(x => x.StartDate).Take(limit).ToList();
+
+        var cycleLengths = items.Where(x => x.CycleLengthDays.HasValue).Select(x => (double)x.CycleLengthDays!.Value).ToList();
+        var periodLengths = items.Where(x => x.PeriodLengthDays.HasValue).Select(x => (double)x.PeriodLengthDays!.Value).ToList();
+
+        return new CycleHistoryDto
+        {
+            UserId = userId,
+            LifeStage = lifeStage,
+            TotalCycles = allPeriods.Count,
+            AverageCycleLengthDays = cycleLengths.Count > 0 ? Math.Round(cycleLengths.Average(), 1) : (double?)null,
+            AveragePeriodLengthDays = periodLengths.Count > 0 ? Math.Round(periodLengths.Average(), 1) : (double?)null,
+            Cycles = orderedDescending
+        };
+    }
 }
-
-
-
