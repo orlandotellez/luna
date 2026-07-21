@@ -6,4 +6,5 @@ public interface IPregnancyService
 {
     Task<PregnancyRegistrationResponseDto> RegisterPregnancyAsync(Guid userId, RegisterPregnancyRequest request);
     Task<CurrentPregnancyResponseDto> GetCurrentPregnancyAsync(Guid userId);
+    Task<int?> GetActivePregnancyCurrentWeekAsync(Guid userId);
 }

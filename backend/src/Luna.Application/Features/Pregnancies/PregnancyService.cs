@@ -115,4 +115,13 @@ public class PregnancyService : IPregnancyService
             Notes = pregnancy.Notes
         };
     }
+
+    public async Task<int?> GetActivePregnancyCurrentWeekAsync(Guid userId)
+    {
+        var pregnancy = await _pregnancyRepository.GetActiveByUserIdAsync(userId);
+        if (pregnancy is null)
+            return null;
+
+        return PregnancyHelper.CalculateCurrentWeek(pregnancy.EstimatedDueDate);
+    }
 }
