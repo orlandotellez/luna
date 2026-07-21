@@ -104,4 +104,17 @@ public class CycleController : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("predictions")]
+    public async Task<ActionResult<CycleForecastResponseDto>> GetPredictions()
+    {
+        var userId = HttpContext.GetCurrentUserId();
+
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var result = await _cycleService.GetPredictionsAsync(userId.Value);
+
+        return Ok(result);
+    }
 }

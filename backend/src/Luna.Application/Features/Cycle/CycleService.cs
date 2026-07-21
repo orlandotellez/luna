@@ -472,4 +472,181 @@ public class CycleService : ICycleService
 
         return baseline;
     }
+
+    public async Task<CycleForecastResponseDto> GetPredictionsAsync(Guid userId)
+    {
+        var user = await _userRepository.GetByIdAsync(userId);
+        if (user is null) throw AppExceptions.NotFound("User NotFound");
+
+        var lifeStage = user.LifeStage ?? LifeStage.ActiveCycle;
+        var activePregnancy = await _pregnancyRepository.GetActiveByUserIdAsync(userId);
+        if (activePregnancy is not null)
+            lifeStage = LifeStage.Pregnancy;
+
+        var lifeStageState = lifeStage switch
+        {
+            LifeStage.Pregnancy => "pregnancy",
+            LifeStage.Menopause => "menopause",
+            LifeStage.Adolescent => "adolescent",
+            _ => "active_cycle"
+        };
+
+        if (lifeStage == LifeStage.Pregnancy || lifeStage == LifeStage.Menopause)
+        {
+            return new CycleForecastResponseDto
+            {
+                UserId = userId,
+                LifeStage = lifeStage,
+                LifeStageState = lifeStageState,
+                IsPredictionApplicable = false,
+                Prediction = null,
+                Metadata = null
+            };
+        }
+
+        var healthProfile = await _healthProfileRepository.GetByUserIdAsync(userId);
+        var allPeriods = (await _periodEntryRepository.GetByUserIdAsync(userId))
+            .OrderBy(p => p.StartDate)
+            .ToList();
+
+        var cycleLength = 28;
+        var periodLength = 5;
+        var source = "default";
+        var cyclesAnalyzed = 0;
+
+        if (healthProfile?.HasRegularCycle == true && healthProfile.CycleLengthDays.HasValue)
+        {
+            cycleLength = healthProfile.CycleLengthDays.Value;
+            periodLength = healthProfile.PeriodLengthDays ?? 5;
+            source = "config";
+        }
+        else
+        {
+            var cycleLengthsHistory = new List<int>();
+            var periodLengthsHistory = new List<int>();
+
+            for (var i = 1; i < allPeriods.Count; i++)
+            {
+                var prev = allPeriods[i - 1];
+                var curr = allPeriods[i];
+                if (prev.EndDate.HasValue)
+                {
+                    cycleLengthsHistory.Add(curr.StartDate.DayNumber - prev.StartDate.DayNumber);
+                    if (curr.EndDate.HasValue)
+                        periodLengthsHistory.Add(curr.EndDate.Value.DayNumber - curr.StartDate.DayNumber + 1);
+                }
+            }
+
+            var recentCycles = cycleLengthsHistory.TakeLast(6).ToList();
+            var recentPeriods = periodLengthsHistory.TakeLast(6).ToList();
+            cyclesAnalyzed = recentCycles.Count;
+
+            if (recentCycles.Count >= 3)
+            {
+                cycleLength = (int)Math.Round(Median(recentCycles), 0);
+                source = "historical_median";
+            }
+            if (recentPeriods.Count > 0)
+            {
+                periodLength = (int)Math.Round(Median(recentPeriods), 0);
+            }
+        }
+
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var prediction = ComputeCurrentAndFuture(today, allPeriods, cycleLength, periodLength, out var isAnomaly);
+
+        var confidence = source == "config" || cyclesAnalyzed >= 6 ? "high"
+            : cyclesAnalyzed >= 3 ? "medium"
+            : "low";
+
+        return new CycleForecastResponseDto
+        {
+            UserId = userId,
+            LifeStage = lifeStage,
+            LifeStageState = lifeStageState,
+            IsPredictionApplicable = true,
+            Prediction = prediction,
+            Metadata = new CycleForecastMetadataDto
+            {
+                Confidence = confidence,
+                Source = source,
+                AssumedCycleLength = cycleLength,
+                AssumedPeriodLength = periodLength,
+                CyclesAnalyzed = cyclesAnalyzed,
+                IsAnomaly = isAnomaly
+            }
+        };
+    }
+
+    private static double Median(List<int> values)
+    {
+        if (values.Count == 0) return 0;
+        var sorted = values.OrderBy(x => x).ToList();
+        var n = sorted.Count;
+        return n % 2 == 1
+            ? sorted[n / 2]
+            : (sorted[(n / 2) - 1] + sorted[n / 2]) / 2.0;
+    }
+
+    private static CyclePredictionDto ComputeCurrentAndFuture(
+        DateOnly today,
+        List<PeriodEntry> allPeriodsAsc,
+        int cycleLength,
+        int periodLength,
+        out bool isAnomaly)
+    {
+        isAnomaly = false;
+        var prediction = new CyclePredictionDto();
+
+        if (allPeriodsAsc.Count == 0)
+        {
+            prediction.CurrentPhase = "unknown";
+            return prediction;
+        }
+
+        var lastEntry = allPeriodsAsc.Last();
+
+        var nextStart = lastEntry.StartDate.AddDays(cycleLength);
+        var nextStartDayNumber = nextStart.DayNumber;
+        var daysUntilNext = nextStartDayNumber - today.DayNumber;
+
+        var ovulationOffset = cycleLength - 14;
+        var ovulationDate = lastEntry.StartDate.AddDays(ovulationOffset - 1);
+        var fertileStart = ovulationDate.AddDays(-5);
+        var fertileEnd = ovulationDate.AddDays(1);
+
+        prediction.NextPeriodStart = nextStart;
+        prediction.NextPeriodEnd = nextStart.AddDays(periodLength - 1);
+        prediction.FertileWindowStart = fertileStart;
+        prediction.FertileWindowEnd = fertileEnd;
+        prediction.OvulationDate = ovulationDate;
+        prediction.DaysUntilNextPeriod = daysUntilNext;
+
+        var dayOfCycle = today.DayNumber - lastEntry.StartDate.DayNumber + 1;
+        prediction.DayOfCycle = dayOfCycle;
+
+        if (dayOfCycle <= periodLength)
+        {
+            prediction.CurrentPhase = "menstrual";
+        }
+        else if (dayOfCycle <= cycleLength - 16)
+        {
+            prediction.CurrentPhase = "follicular";
+        }
+        else if (dayOfCycle <= cycleLength - 13)
+        {
+            prediction.CurrentPhase = "ovulatory";
+        }
+        else if (dayOfCycle <= cycleLength)
+        {
+            prediction.CurrentPhase = "luteal";
+        }
+        else
+        {
+            prediction.CurrentPhase = "late";
+            isAnomaly = dayOfCycle > cycleLength + 14;
+        }
+
+        return prediction;
+    }
 }
