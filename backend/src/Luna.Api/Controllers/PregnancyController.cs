@@ -12,10 +12,15 @@ namespace Luna.Api.Controllers;
 public class PregnancyController : ControllerBase
 {
     private readonly IPregnancyService _pregnancyService;
+    private readonly IPregnancyContentService _contentService;
 
-    public PregnancyController(IPregnancyService pregnancyService)
+    public PregnancyController(
+        IPregnancyService pregnancyService,
+        IPregnancyContentService pregnancyContentService
+        )
     {
         _pregnancyService = pregnancyService;
+        _contentService = pregnancyContentService;
     }
 
     [HttpPost("register")]
@@ -43,5 +48,19 @@ public class PregnancyController : ControllerBase
         var result = await _pregnancyService.GetCurrentPregnancyAsync(userId.Value);
 
         return Ok(result);
+    }
+
+    [HttpGet("week/{weekNumber:int}")]
+    public async Task<ActionResult<PregnancyWeekContentDto>> GetWeek(int weekNumber)
+    {
+        var userId = HttpContext.GetCurrentUserId();
+        if (userId is null)
+            return Unauthorized(new { error = "Invalid token" });
+
+        var content = await _contentService.GetWeekAsync(weekNumber);
+        if (content is null)
+            return NotFound(new { error = $"Week {weekNumber} not found or out of range (1..42)." });
+
+        return Ok(content);
     }
 }

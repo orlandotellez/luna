@@ -34,6 +34,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<ISymptomEntryRepository, SymptomEntryRepository>();
         services.AddScoped<ICycleService, CycleService>();
         services.AddScoped<IPregnancyService, PregnancyService>();
+        services.AddSingleton<IPregnancyContentService, PregnancyContentService>();
 
         // Services Infrastructure
         services.AddScoped<ITokenService, TokenService>();
