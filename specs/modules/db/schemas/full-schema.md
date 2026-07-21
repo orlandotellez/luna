@@ -1,6 +1,10 @@
-# Database Schema
+# Full Schema — LUNA
 
 Esquema completo de la base de datos PostgreSQL de LUNA.
+
+> **Enums**: Ver [enums/](../enums/README.md) para la documentación de cada tipo enumerado.
+>
+> **Tablas individuales**: Cada tabla tiene su propio archivo en este directorio.
 
 ---
 
@@ -14,152 +18,11 @@ Esquema completo de la base de datos PostgreSQL de LUNA.
 
 ---
 
-## Enums
+## 1. Users & Auth
 
-### `user_role`
-| Valor | Descripción |
-|-------|-------------|
-| `USER` | Usuaria principal — mujer que recibe acompañamiento |
-| `FAMILIAR` | Familiar acompañante — pareja, madre, hermana |
-| `PROFESSIONAL` | Profesional de la salud |
-| `ADMIN` | Administradora del sistema |
+### `users`
+[→ Archivo individual](./users.md)
 
-### `life_stage`
-| Valor | Descripción |
-|-------|-------------|
-| `ADOLESCENT` | Adolescente / Juventud |
-| `ACTIVE_CYCLE` | Edad adulta / ciclo menstrual activo |
-| `PREGNANCY` | Embarazo / Postparto |
-| `MENOPAUSE` | Perimenopausia / Menopausia |
-
-### `cycle_phase`
-| Valor | Descripción |
-|-------|-------------|
-| `MENSTRUAL` | Fase menstrual (días 1-5 aprox) |
-| `FOLLICULAR` | Fase folicular |
-| `OVULATORY` | Fase ovulatoria |
-| `LUTEAL` | Fase lútea |
-
-### `flow_intensity`
-| Valor | Descripción |
-|-------|-------------|
-| `LIGHT` | Flujo leve |
-| `MODERATE` | Flujo moderado |
-| `HEAVY` | Flujo abundante |
-
-### `symptom_type`
-| Valor | Descripción |
-|-------|-------------|
-| `CRAMPS` | Cólicos |
-| `HEADACHE` | Dolor de cabeza |
-| `BLOATING` | Hinchazón |
-| `MOOD_SWINGS` | Cambios de ánimo |
-| `FATIGUE` | Fatiga |
-| `NAUSEA` | Náuseas |
-| `BREAST_TENDERNESS` | Senos sensibles |
-| `BACK_PAIN` | Dolor lumbar |
-| `CRAVINGS` | Antojos |
-| `INSOMNIA` | Insomnio |
-| `ACNE` | Acné |
-| `SPOTTING` | Manchado |
-
-### `mood_type`
-| Valor | Descripción |
-|-------|-------------|
-| `HAPPY` | Feliz |
-| `NORMAL` | Normal |
-| `SAD` | Triste |
-| `ANXIOUS` | Ansiosa |
-| `IRRITABLE` | Irritable |
-| `CALM` | Calmada |
-| `ENERGETIC` | Energética |
-
-### `menopause_symptom_type`
-| Valor | Descripción |
-|-------|-------------|
-| `HOT_FLASH` | Sofocos |
-| `NIGHT_SWEATS` | Sudores nocturnos |
-| `VAGINAL_DRYNESS` | Sequedad vaginal |
-| `INSOMNIA` | Insomnio |
-| `MOOD_SWINGS` | Cambios de ánimo |
-| `WEIGHT_GAIN` | Aumento de peso |
-| `JOINT_PAIN` | Dolor articular |
-| `MEMORY_LOSS` | Pérdida de memoria |
-| `HAIR_LOSS` | Pérdida de cabello |
-| `LIBIDO_DECREASE` | Disminución de libido |
-
-### `article_category`
-| Valor | Descripción |
-|-------|-------------|
-| `CYCLE` | Ciclo menstrual |
-| `PREGNANCY` | Embarazo |
-| `MENOPAUSE` | Menopausia |
-| `GENERAL` | Salud general |
-| `MYTHS` | Mitos vs Realidad |
-| `NUTRITION` | Nutrición |
-| `EXERCISE` | Ejercicio |
-| `MENTAL_HEALTH` | Salud mental |
-
-### `language`
-| Valor | Descripción |
-|-------|-------------|
-| `ES` | Español |
-| `NAH` | Náhuatl |
-| `MAY` | Maya |
-| `MIX` | Mixteco |
-| `ZAP` | Zapoteco |
-| `TSO` | Tsotsil |
-| `OTO` | Otomí |
-
-### `family_relationship`
-| Valor | Descripción |
-|-------|-------------|
-| `PARTNER` | Pareja |
-| `MOTHER` | Madre |
-| `SISTER` | Hermana |
-| `DAUGHTER` | Hija |
-| `OTHER` | Otro |
-
-### `reminder_frequency`
-| Valor | Descripción |
-|-------|-------------|
-| `ONCE` | Una vez |
-| `DAILY` | Diario |
-| `WEEKLY` | Semanal |
-| `MONTHLY` | Mensual |
-| `CUSTOM` | Personalizado |
-
-### `appointment_type`
-| Valor | Descripción |
-|-------|-------------|
-| `PRENATAL` | Control prenatal |
-| `GYNECOLOGIST` | Consulta ginecológica |
-| `MAMMOGRAM` | Mastografía |
-| `PAP_SMEAR` | Papanicolaou |
-| `DENSITOMETRY` | Densitometría ósea |
-| `ULTRASOUND` | Ecografía |
-| `BLOOD_TEST` | Análisis de sangre |
-| `OTHER` | Otro |
-
-### `notification_type`
-| Valor | Descripción |
-|-------|-------------|
-| `PERIOD_REMINDER` | Recordatorio de período |
-| `PILL_REMINDER` | Recordatorio de anticonceptivo |
-| `APPOINTMENT` | Recordatorio de cita |
-| `CONTENT` | Contenido recomendado |
-| `FAMILY_MESSAGE` | Mensaje de acompañante |
-| `SUPPORT` | Recordatorio de apoyo |
-| `ALERT` | Alerta de salud |
-| `AFFIRMATION` | Afirmación diaria |
-
----
-
-## Tablas
-
-### 1. Users & Auth
-
-#### `users`
 Tabla central de usuarias y acompañantes.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -186,7 +49,9 @@ Tabla central de usuarias y acompañantes.
 
 ---
 
-#### `accounts`
+### `accounts`
+[→ Archivo individual](./accounts.md)
+
 Autenticación por password u OAuth.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -204,7 +69,9 @@ Autenticación por password u OAuth.
 
 ---
 
-#### `sessions`
+### `sessions`
+[→ Archivo individual](./sessions.md)
+
 Sesiones activas (refresh tokens).
 
 | Columna | Tipo | Constraints | Descripción |
@@ -223,7 +90,9 @@ Sesiones activas (refresh tokens).
 
 ---
 
-#### `verifications`
+### `verifications`
+[→ Archivo individual](./verifications.md)
+
 Tokens de verificación (email, password reset).
 
 | Columna | Tipo | Constraints | Descripción |
@@ -239,7 +108,9 @@ Tokens de verificación (email, password reset).
 
 ---
 
-#### `login_logs`
+### `login_logs`
+[→ Archivo individual](./login_logs.md)
+
 Auditoría de intentos de inicio de sesión.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -258,9 +129,11 @@ Auditoría de intentos de inicio de sesión.
 
 ---
 
-### 2. Health Profile
+## 2. Health Profile
 
-#### `health_profiles`
+### `health_profiles`
+[→ Archivo individual](./health_profiles.md)
+
 Perfil de salud completo de la usuaria.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -289,9 +162,11 @@ Perfil de salud completo de la usuaria.
 
 ---
 
-### 3. Cycle Tracking
+## 3. Cycle Tracking
 
-#### `cycles`
+### `cycles`
+[→ Archivo individual](./cycles.md)
+
 Ciclos menstruales registrados.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -315,7 +190,9 @@ Ciclos menstruales registrados.
 
 ---
 
-#### `cycle_days`
+### `cycle_days`
+[→ Archivo individual](./cycle_days.md)
+
 Registro diario de síntomas dentro de un ciclo.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -342,7 +219,9 @@ Registro diario de síntomas dentro de un ciclo.
 
 ---
 
-#### `symptoms`
+### `symptoms`
+[→ Archivo individual](./symptoms.md)
+
 Síntomas registrados por día.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -360,9 +239,11 @@ Síntomas registrados por día.
 
 ---
 
-### 4. Pregnancy
+## 4. Pregnancy
 
-#### `pregnancies`
+### `pregnancies`
+[→ Archivo individual](./pregnancies.md)
+
 Registro de embarazo.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -385,7 +266,9 @@ Registro de embarazo.
 
 ---
 
-#### `appointments`
+### `appointments`
+[→ Archivo individual](./appointments.md)
+
 Citas médicas prenatales y ginecológicas.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -412,7 +295,9 @@ Citas médicas prenatales y ginecológicas.
 
 ---
 
-#### `fetal_movements`
+### `fetal_movements`
+[→ Archivo individual](./fetal_movements.md)
+
 Registro de movimientos fetales (patadas).
 
 | Columna | Tipo | Constraints | Descripción |
@@ -431,7 +316,9 @@ Registro de movimientos fetales (patadas).
 
 ---
 
-#### `weight_logs`
+### `weight_logs`
+[→ Archivo individual](./weight_logs.md)
+
 Registro de peso durante el embarazo.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -450,7 +337,9 @@ Registro de peso durante el embarazo.
 
 ---
 
-#### `contractions`
+### `contractions`
+[→ Archivo individual](./contractions.md)
+
 Registro de contracciones (preparto).
 
 | Columna | Tipo | Constraints | Descripción |
@@ -472,7 +361,9 @@ Registro de contracciones (preparto).
 
 ---
 
-#### `birth_plans`
+### `birth_plans`
+[→ Archivo individual](./birth_plans.md)
+
 Plan de parto de la usuaria.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -498,9 +389,11 @@ Plan de parto de la usuaria.
 
 ---
 
-### 5. Menopause
+## 5. Menopause
 
-#### `menopause_tracking`
+### `menopause_tracking`
+[→ Archivo individual](./menopause_tracking.md)
+
 Seguimiento de menopausia.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -519,7 +412,9 @@ Seguimiento de menopausia.
 
 ---
 
-#### `menopause_symptom_logs`
+### `menopause_symptom_logs`
+[→ Archivo individual](./menopause_symptom_logs.md)
+
 Registro diario/semanal de síntomas menopáusicos.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -540,9 +435,11 @@ Registro diario/semanal de síntomas menopáusicos.
 
 ---
 
-### 6. Content Library
+## 6. Content Library
 
-#### `articles`
+### `articles`
+[→ Archivo individual](./articles.md)
+
 Contenido educativo.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -572,7 +469,9 @@ Contenido educativo.
 
 ---
 
-#### `article_translations`
+### `article_translations`
+[→ Archivo individual](./article_translations.md)
+
 Traducciones de artículos a lenguas originarias.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -593,7 +492,9 @@ Traducciones de artículos a lenguas originarias.
 
 ---
 
-#### `myths`
+### `myths`
+[→ Archivo individual](./myths.md)
+
 Mitos vs Realidad.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -611,7 +512,9 @@ Mitos vs Realidad.
 
 ---
 
-#### `glossary_terms`
+### `glossary_terms`
+[→ Archivo individual](./glossary_terms.md)
+
 Glosario de términos médicos.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -628,9 +531,11 @@ Glosario de términos médicos.
 
 ---
 
-### 7. Family / Acompañamiento
+## 7. Family / Acompañamiento
 
-#### `family_members`
+### `family_members`
+[→ Archivo individual](./family_members.md)
+
 Acompañantes autorizados por la usuaria.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -657,7 +562,9 @@ Acompañantes autorizados por la usuaria.
 
 ---
 
-#### `family_messages`
+### `family_messages`
+[→ Archivo individual](./family_messages.md)
+
 Mensajes en el foro familiar.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -674,9 +581,11 @@ Mensajes en el foro familiar.
 
 ---
 
-### 8. Directory
+## 8. Directory
 
-#### `professionals`
+### `professionals`
+[→ Archivo individual](./professionals.md)
+
 Profesionales de la salud.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -711,7 +620,9 @@ Profesionales de la salud.
 
 ---
 
-#### `health_centers`
+### `health_centers`
+[→ Archivo individual](./health_centers.md)
+
 Centros de salud, clínicas y hospitales.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -736,9 +647,11 @@ Centros de salud, clínicas y hospitales.
 
 ---
 
-### 9. Community
+## 9. Community
 
-#### `forum_posts`
+### `forum_posts`
+[→ Archivo individual](./forum_posts.md)
+
 Posts del foro por etapa.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -750,7 +663,7 @@ Posts del foro por etapa.
 | `content` | `text` | `NOT NULL` | |
 | `is_anonymous` | `boolean` | `DEFAULT false` | Publicar anónimamente |
 | `is_published` | `boolean` | `DEFAULT true` | |
-| `reactions` | `jsonb` | `DEFAULT '{}'` | Conteo de reacciones { "heart": 5, "hug": 3, "strong": 7 } |
+| `reactions` | `jsonb` | `DEFAULT '{}'` | Conteo de reacciones |
 | `comments_count` | `int` | `DEFAULT 0` | |
 | `reports_count` | `int` | `DEFAULT 0` | |
 | `created_at` | `timestamptz` | `NOT NULL` | |
@@ -762,7 +675,9 @@ Posts del foro por etapa.
 
 ---
 
-#### `forum_comments`
+### `forum_comments`
+[→ Archivo individual](./forum_comments.md)
+
 Comentarios en posts del foro.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -786,7 +701,9 @@ Comentarios en posts del foro.
 
 ---
 
-#### `stories`
+### `stories`
+[→ Archivo individual](./stories.md)
+
 Historias destacadas de la comunidad.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -796,7 +713,7 @@ Historias destacadas de la comunidad.
 | `title` | `varchar(255)` | `NOT NULL` | |
 | `content` | `text` | `NOT NULL` | |
 | `category` | `varchar(50)` | | superacion, descubrimiento, comunidad, consejos |
-| `anonymous_name` | `varchar(100)` | | Nombre usado (ej: "María de la Luz") |
+| `anonymous_name` | `varchar(100)` | | Nombre usado |
 | `is_approved` | `boolean` | `DEFAULT false` | Aprobada por admin |
 | `is_published` | `boolean` | `DEFAULT false` | |
 | `created_at` | `timestamptz` | `NOT NULL` | |
@@ -806,9 +723,11 @@ Historias destacadas de la comunidad.
 
 ---
 
-### 10. Reminders
+## 10. Reminders
 
-#### `reminders`
+### `reminders`
+[→ Archivo individual](./reminders.md)
+
 Recordatorios personalizados.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -834,9 +753,11 @@ Recordatorios personalizados.
 
 ---
 
-### 11. Notifications
+## 11. Notifications
 
-#### `notifications`
+### `notifications`
+[→ Archivo individual](./notifications.md)
+
 Notificaciones in-app.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -856,7 +777,9 @@ Notificaciones in-app.
 
 ---
 
-#### `push_devices`
+### `push_devices`
+[→ Archivo individual](./push_devices.md)
+
 Registro de dispositivos para FCM.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -874,9 +797,11 @@ Registro de dispositivos para FCM.
 
 ---
 
-### 12. Reports & Audit
+## 12. Reports & Audit
 
-#### `health_reports`
+### `health_reports`
+[→ Archivo individual](./health_reports.md)
+
 Reportes de salud generados.
 
 | Columna | Tipo | Constraints | Descripción |
@@ -895,7 +820,9 @@ Reportes de salud generados.
 
 ---
 
-#### `audit_logs`
+### `audit_logs`
+[→ Archivo individual](./audit_logs.md)
+
 Log de auditoría para acceso a datos sensibles.
 
 | Columna | Tipo | Constraints | Descripción |
