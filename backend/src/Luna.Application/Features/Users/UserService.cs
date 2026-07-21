@@ -9,6 +9,8 @@ using Luna.Domain.Exceptions;
 using Luna.Domain.Enums;
 using Luna.Domain.Entities.Cycle;
 using Luna.Domain.Entities.Users;
+using Luna.Domain.Entities.Pregnancies;
+
 
 namespace Luna.Application.Features.Users;
 

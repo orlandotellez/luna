@@ -1,6 +1,7 @@
 using Luna.Domain.Entities.Auth;
 using Luna.Domain.Entities.Users;
 using Luna.Domain.Entities.Cycle;
+using Luna.Domain.Entities.Pregnancies;
 using Luna.Infrastructure.Persistence.Configurations.Cycle;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,5 +27,6 @@ public class ApplicationDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new PeriodEntryConfiguration());
         modelBuilder.ApplyConfiguration(new SymptomEntryConfiguration());
+        modelBuilder.ApplyConfiguration(new PregnancyConfiguration());
     }
 }

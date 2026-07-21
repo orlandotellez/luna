@@ -1,5 +1,6 @@
 using Luna.Application.Common.Models.Cycle;
 using Luna.Domain.Entities.Cycle;
+using Luna.Domain.Entities.Pregnancies;
 using Luna.Application.Common.Models.User;
 
 namespace Luna.Application.Common.Mapping;

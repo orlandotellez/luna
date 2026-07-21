@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Luna.Application.Common.Interfaces.Repositories.Cycle;
-using Luna.Domain.Entities.Cycle;
+using Luna.Domain.Entities.Pregnancies;
 
 namespace Luna.Infrastructure.Persistence.Repositories.Cycle;
 

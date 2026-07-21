@@ -1,6 +1,6 @@
 using Luna.Domain.Entities.Users;
 
-namespace Luna.Domain.Entities.Cycle;
+namespace Luna.Domain.Entities.Pregnancies;
 
 public class Pregnancy
 {
