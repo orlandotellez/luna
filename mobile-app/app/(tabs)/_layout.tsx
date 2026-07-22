@@ -1,18 +1,31 @@
 import { Tabs } from "expo-router";
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Feather from '@expo/vector-icons/Feather';
 
-type TabRoutes = "index" | "explore";
+type TabRoutes = "index" | "profile";
 
 interface TabConfig {
   name: TabRoutes;
   title: string;
-  icon: any;
+  icon: (color: string, size: number) => React.ReactNode;
 }
 
 const TABS: TabConfig[] = [
-  { name: "index", title: "Inicio", icon: "chatbubble-outline" },
-  { name: "explore", title: "Explorar", icon: "chatbubble-outline" },
+  {
+    name: "index",
+    title: "Inicio",
+    icon: (color, size) => (
+      <FontAwesome5 name="home" size={size} color={color} />
+    ),
+  },
+  {
+    name: "profile",
+    title: "Perfil",
+    icon: (color, size) => (
+      <Feather name="user" size={size} color={color} />
+    ),
+  },
 ];
 
 export default function TabLayout() {
@@ -34,9 +47,7 @@ export default function TabLayout() {
           name={tab.name}
           options={{
             title: tab.title,
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name={tab.icon} size={size} color={color} />
-            ),
+            tabBarIcon: ({ color, size }) => tab.icon(color, size),
           }}
         />
       ))}

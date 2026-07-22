@@ -27,6 +27,7 @@ useEffect(() => {
   if (Platform.OS !== 'android') return
   NavigationBar.setButtonStyleAsync('dark')
 })
+
 export default function RootLayout() {
   return (
     <>
@@ -34,7 +35,7 @@ export default function RootLayout() {
         <View style={{ flex: 1, backgroundColor: colors.secondary }}>
           <StatusBar
             barStyle="dark-content"
-            backgroundColor={colors.secondary}
+            backgroundColor={colors.background}
             translucent={false}
           />
 
