@@ -1,10 +1,10 @@
-import { THEME } from '@/src/shared/lib';
 import { Stack } from 'expo-router';
 import * as NavigationBar from 'expo-navigation-bar';
 import { useEffect } from 'react';
 import { Platform, StatusBar, View } from 'react-native';
 import 'react-native-reanimated';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { colors } from '@/src/shared/lib';
 
 type RootRoutes = "(tabs)"
 
@@ -27,21 +27,22 @@ useEffect(() => {
   if (Platform.OS !== 'android') return
   NavigationBar.setButtonStyleAsync('dark')
 })
+
 export default function RootLayout() {
   return (
     <>
       <SafeAreaProvider>
-        <View style={{ flex: 1, backgroundColor: THEME.colors.secondary }}>
+        <View style={{ flex: 1, backgroundColor: colors.secondary }}>
           <StatusBar
             barStyle="dark-content"
-            backgroundColor={THEME.colors.secondary}
+            backgroundColor={colors.background}
             translucent={false}
           />
 
           <Stack
             screenOptions={{
               headerShown: false,
-              contentStyle: { backgroundColor: THEME.colors.secondary },
+              contentStyle: { backgroundColor: colors.secondary },
               animation: 'none'
             }}
           >
