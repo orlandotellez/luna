@@ -1,9 +1,14 @@
 # LUNA — Acompañamiento Integral de Salud Femenina
 
-**LUNA** es una aplicación móvil diseñada para acompañar a las mujeres en todas las etapas de su vida: **menstruación, embarazo y menopausia**. Con contenido educativo en español y lenguas originarias de Latinoamérica, y un enfoque en la participación de la red de apoyo familiar.
+![React Native](https://img.shields.io/badge/React%20Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Expo](https://img.shields.io/badge/Expo-1C1E24?style=for-the-badge&logo=expo&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![.NET 10](https://img.shields.io/badge/.NET_10-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?style=for-the-badge&logo=pnpm&logoColor=white)
 
-> **Estado actual: Desarrollo activo — fase temprana.**  
-> Este proyecto está en construcción. Las funcionalidades documentadas reflejan el destino final, no necesariamente el estado actual del código.
+**LUNA** es una aplicación móvil diseñada para acompañar a las mujeres en todas las etapas de su vida: **menstruación, embarazo y menopausia**. Con contenido educativo en español y lenguas originarias de Latinoamérica, y un enfoque en la participación de la red de apoyo familiar.
 
 ---
 
@@ -17,6 +22,17 @@ LUNA propone un modelo diferente:
 - **Acompañamiento familiar** — pareja, madre, hermana, hija pueden participar como acompañantes en el proceso.
 - **Directorio de profesionales y centros de salud** — enfocado en comunidades latinoamericanas.
 - **Seguimiento integral** — ciclo menstrual, embarazo y menopausia en una sola app.
+
+---
+
+## Índice
+
+- [Tech Stack](#tech-stack)
+- [Cómo Empezar](#cómo-empezar)
+- [Arquitectura](#arquitectura)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Documentación](#documentación)
+- [Contribuir](#contribuir)
 
 ---
 
@@ -45,12 +61,34 @@ LUNA propone un modelo diferente:
 | **Expo Router** | 6.0.23 | File-based routing |
 | **pnpm** | — | Package manager |
 
-### Infraestructura (planeada)
+---
 
-- Firebase Cloud Messaging — notificaciones push
-- SendGrid — emails transaccionales
-- AWS S3 — almacenamiento de archivos
-- Docker — contenedores
+## Cómo Empezar
+
+### Prerrequisitos
+
+- .NET 10 SDK
+- Node.js 20+
+- pnpm
+- PostgreSQL 16+ (o Docker)
+
+### Backend
+Las migraciones se generan automaticamente, solo se necesita la conexión local de la base de dato en appsettings.json
+
+```bash
+cd backend/src/Luna.Api
+dotnet run 
+```
+
+### Frontend
+
+```bash
+cd mobile-app
+pnpm install
+pnpm expo start -c 
+```
+
+``
 
 ---
 
@@ -118,43 +156,6 @@ LUNA-REPO/
 │       └── db/                # Schema SQL (30+ tablas), setup Docker
 │
 └── experimento/               # Directorio experimental
-```
-
----
-
-
-## Cómo Empezar
-
-### Prerrequisitos
-
-- .NET 10 SDK
-- Node.js 20+
-- pnpm
-- PostgreSQL 16+ (o Docker)
-
-### Backend
-
-```bash
-cd backend/src/Luna.Api
-dotnet restore
-dotnet run
-```
-
-### Frontend
-
-```bash
-cd mobile-app
-pnpm install
-npx expo start
-```
-
-### Base de Datos (con Docker)
-
-```bash
-cd specs/modules/db
-# Levantar PostgreSQL
-docker compose up -d
-# Luego aplicar migraciones desde el backend
 ```
 
 ---
